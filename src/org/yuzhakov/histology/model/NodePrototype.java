@@ -3,7 +3,7 @@ package org.yuzhakov.histology.model;
 public class NodePrototype {
 	protected Topology upperTopology;
 	protected Topology bottomTopology;
-	protected int[][] mapping;	
+	protected int[][] mapping;
 	
 	public Topology getUpperTopology() {
 		return upperTopology;

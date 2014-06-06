@@ -1,5 +1,7 @@
 package org.yuzhakov.histology.model;
 
+import java.util.List;
+
 import org.yuzhakov.histology.Util;
 
 public class Topology {
@@ -7,6 +9,7 @@ public class Topology {
 	private double[] edges;
 	private double[] angles;
 	private Vertex[] coordinates;
+	private List<Vertex[]> triangles;
 	
 	public Topology(int size) {
 		this.size = size;
