@@ -11,7 +11,8 @@ public class JRModelConverter {
 		ifsf.setFaceCount(node.getFacesCount());
 		ifsf.setVertexCoordinates(node.getVerticesCoordinates());
 		ifsf.setFaceIndices(node.getFaces());
-		ifsf.setGenerateEdgesFromFaces(true);
+		ifsf.setEdgeCount(node.getEdgesCount());
+		ifsf.setEdgeIndices(node.getEdges());
 		ifsf.setGenerateFaceNormals(true);
 		ifsf.update();
 		

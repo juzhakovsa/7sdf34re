@@ -25,17 +25,17 @@ public class JRealityComponent extends JPanel{
 
 	public JRealityComponent() {
 		super(new BorderLayout());
-//		Node sample1 = new Node(Samples.hexagonPrism, 4, new Vertex());
+		Node sample1 = new Node(Samples.hexagonTriangle(), 4, new Vertex());
 //		Node sample2 = new Node(Samples.hexagonPrism, 1, new Vertex(1,1,4));
 //		
 //		ModelCut cut = new ModelCut(new Vertex(0, 0, 1), new Vertex(0,0,1));
 //		cut.cut(sample1);
 //		
-//		IndexedFaceSet g1 = JRModelConverter.getGeometry(sample1);
+		IndexedFaceSet g1 = JRModelConverter.getGeometry(sample1);
 //		IndexedFaceSet g2 = JRModelConverter.getGeometry(sample2);
 //		
-//		SceneGraphComponent c1 = SceneGraphUtility.createFullSceneGraphComponent();
-//		c1.setGeometry(g1);
+		SceneGraphComponent c1 = SceneGraphUtility.createFullSceneGraphComponent();
+		c1.setGeometry(g1);
 //		SceneGraphComponent c2 = SceneGraphUtility.createFullSceneGraphComponent();
 //		c2.setGeometry(g2);
 //		
@@ -43,12 +43,8 @@ public class JRealityComponent extends JPanel{
 //		world.addChild(c1);
 //		world.addChild(c2);
 		
-		SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
-		world.setGeometry(Samples.Star4Flat());
-//		world.setGeometry(JRModelConverter.getGeometry(new Node(Samples.Star4(),2,new Vertex())));
-		
 		View.setTitle("The Icosahedron");
-		viewer = JRViewer.createJRViewer(world);
+		viewer = JRViewer.createJRViewer(c1);
 		viewer.startupLocal();
 		Viewer v = viewer.getViewer();
 		viewingComponent = (Component) v.getViewingComponent();

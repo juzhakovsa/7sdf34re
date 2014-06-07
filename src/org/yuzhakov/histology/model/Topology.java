@@ -3,13 +3,14 @@ package org.yuzhakov.histology.model;
 import java.util.List;
 
 import org.yuzhakov.histology.Util;
+import org.yuzhakov.histology.triangulation.Triangulation;
 
 public class Topology {
 	private int size;
 	private double[] edges;
 	private double[] angles;
 	private Vertex[] coordinates;
-	private List<Vertex[]> triangles;
+	private List<int[]> triangles;
 	
 	public Topology(int size) {
 		this.size = size;
@@ -34,6 +35,10 @@ public class Topology {
 		return coordinates;
 	}
 	
+	public List<int[]> getTriangles() {
+		return triangles;
+	}
+	
 	public void normalize(){
 		//»щем размер самого большого ребра
 		double maxValue = edges[0];
@@ -51,8 +56,7 @@ public class Topology {
 			coordinates[i].multiply(1/maxValue);
 		}
 	}
-	
-	
+
 	public static Topology getTopology(Vertex[] v){
 		int size = v.length;		
 		Topology topology = new Topology(size);
@@ -61,7 +65,8 @@ public class Topology {
 		for (int i = 0; i < v.length; ++i){
 			topology.coordinates[i] = new Vertex(v[i]);
 		}
-		topology.normalize();
+		topology.triangles = Triangulation.triangulate(v);
+//		topology.normalize();
 		return topology;
 	}
 	

@@ -12,6 +12,8 @@ public class Node {
 	private double[][] coordinates;
 	private int[][] faces;
 	private int facesCount;
+	private int[][] edges;
+	private int edgesCount;
 
 	public Node(NodePrototype prototype, double height, Vertex offset) {
 		super();
@@ -28,6 +30,7 @@ public class Node {
 		
 		initVerticesCoordinates();
 		initFaces();
+		initEdges();
 	}
 
 	public Topology getUpperTopology() {
@@ -56,6 +59,14 @@ public class Node {
 	
 	public int getFacesCount(){
 		return facesCount;
+	}
+
+	public int[][] getEdges() {
+		return edges;
+	}
+
+	public int getEdgesCount() {
+		return edgesCount;
 	}
 
 	public double getHeight() {
@@ -88,18 +99,20 @@ public class Node {
 		ArrayList<int[]> indices = new ArrayList<>();
 		
 		//bottomIndices
-		int[] bottomIndices = new int[bottomLayer.length];
-		for (int i = 0; i < bottomLayer.length; ++i){
-			bottomIndices[i] = i;
+		List<int[]> bottomTriangles = prototype.getBottomTopology().getTriangles();
+		for (int[] triangle : bottomTriangles){
+			indices.add(triangle);
 		}
-		indices.add(bottomIndices);
 		
-		//upperIndices
-		int[] upperIndices = new int[upperLayer.length];
-		for (int i = 0; i < upperLayer.length; ++i){
-			upperIndices[i] = offset+i;
+		//upperIndices		
+		List<int[]> upperTriangles = prototype.getUpperTopology().getTriangles();
+		for (int[] triangle : upperTriangles){
+			int[] offsetTriangle = new int[3];
+			for (int i = 0; i < offsetTriangle.length; ++i){
+				offsetTriangle[i] = offset + triangle[i];
+			}
+			indices.add(offsetTriangle);
 		}
-		indices.add(upperIndices);
 		
 		int f = 0;
 		for (; f < mapping.length - 1; ++f){
@@ -122,9 +135,37 @@ public class Node {
 		face[3] = offset+map1[1];
 		indices.add(face);
 		
-		facesCount = mapping.length + 2;
+		facesCount = mapping.length + bottomTriangles.size() + upperTriangles.size();
 		
 		faces = indices.toArray(new int[0][0]);
+	}
+	
+	public void initEdges(){
+		int[][] mapping = prototype.getMapping();
+		int offset = bottomLayer.length;
+		ArrayList<int[]> edgesList = new ArrayList<>();
+		
+		//bottom
+		for (int i = 0; i < bottomLayer.length - 1; ++i){
+			edgesList.add(new int[]{i, i+1});
+		}
+		edgesList.add(new int[]{bottomLayer.length - 1, 0});
+		
+		//upper		
+		for (int i = offset; i < upperLayer.length - 1 + offset; ++i){
+			edgesList.add(new int[]{i, i+1});
+		}
+		edgesList.add(new int[]{upperLayer.length - 1 + offset, offset});
+		
+		//side
+		for (int i = 0; i < mapping.length; ++i){
+			int[] map = mapping[i];
+			edgesList.add(new int[]{map[0], map[1]+offset});
+		}
+		
+		edgesCount = edgesList.size();
+		
+		edges = edgesList.toArray(new int[0][0]);
 	}
 	
 	public List<Vertex[]> getFacesCoordinates(){
