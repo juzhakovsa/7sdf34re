@@ -2,9 +2,12 @@ package org.yuzhakov.histology.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.JRModelConverter;
 import org.yuzhakov.histology.model.ModelCut;
 import org.yuzhakov.histology.model.Node;
@@ -25,26 +28,16 @@ public class JRealityComponent extends JPanel{
 
 	public JRealityComponent() {
 		super(new BorderLayout());
-		Node sample1 = new Node(Samples.hexagonTriangle(), 4, new Vertex());
-//		Node sample2 = new Node(Samples.hexagonPrism, 1, new Vertex(1,1,4));
-//		
-//		ModelCut cut = new ModelCut(new Vertex(0, 0, 1), new Vertex(0,0,1));
-//		cut.cut(sample1);
-//		
-		IndexedFaceSet g1 = JRModelConverter.getGeometry(sample1);
-//		IndexedFaceSet g2 = JRModelConverter.getGeometry(sample2);
-//		
-		SceneGraphComponent c1 = SceneGraphUtility.createFullSceneGraphComponent();
-		c1.setGeometry(g1);
-//		SceneGraphComponent c2 = SceneGraphUtility.createFullSceneGraphComponent();
-//		c2.setGeometry(g2);
-//		
-//		SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
-//		world.addChild(c1);
-//		world.addChild(c2);
+		List<Double> heights = new ArrayList<>();
+    	heights.add(new Double(1));
+    	heights.add(new Double(1));
+    	heights.add(new Double(1));
+    	Cell cell = new Cell(Samples.star4Cell(), heights, 0, new Vertex());
+    	
+		SceneGraphComponent world = JRModelConverter.getSGC(cell);
 		
 		View.setTitle("The Icosahedron");
-		viewer = JRViewer.createJRViewer(c1);
+		viewer = JRViewer.createJRViewer(world);
 		viewer.startupLocal();
 		Viewer v = viewer.getViewer();
 		viewingComponent = (Component) v.getViewingComponent();

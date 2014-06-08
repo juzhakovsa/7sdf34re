@@ -9,6 +9,9 @@ import org.poly2tri.geometry.polygon.PolygonPoint;
 import org.poly2tri.triangulation.TriangulationAlgorithm;
 import org.poly2tri.triangulation.delaunay.DelaunayTriangle;
 import org.yuzhakov.histology.gui.MainFrame;
+import org.yuzhakov.histology.model.Cell;
+import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.samples.Samples;
 
 public class Main {
 	public static void main(String[] args) {
@@ -17,8 +20,6 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	MainFrame mainFrame = new MainFrame();
-//            	CellPropertiesFrame frame = new CellPropertiesFrame();
-//            	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
         });
 	}

@@ -1,5 +1,8 @@
 package org.yuzhakov.histology.model.samples;
 
+import java.util.List;
+
+import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Node;
 import org.yuzhakov.histology.model.NodePrototype;
 import org.yuzhakov.histology.model.Topology;
@@ -58,7 +61,7 @@ public class Samples {
 		
 		Vertex u1 = new Vertex(0.8660254037844387, 0.5, 0.0);
 		Vertex u2 = new Vertex(-0.8660254037844385, 0.5, 0.0);
-		Vertex u3 = new Vertex(-1.8369701987210297E-16, -1.0, 0.0);
+		Vertex u3 = new Vertex(0, -2.0, 0.0);
 		
 		Topology bottom = Topology.getTopology(new Vertex[]{b1,b2,b3,b4,b5,b6});
 		Topology upper = Topology.getTopology(new Vertex[]{u1,u2,u3});
@@ -118,6 +121,15 @@ public class Samples {
 		proto.setUpperTopology(upper);
 		proto.setMapping(mapping);
 		
+		return proto;
+	}
+	
+	public static CellPrototype star4Cell(){
+		CellPrototype proto = new CellPrototype();
+		List<NodePrototype> nodes = proto.getNodes();
+		nodes.add(Star4());
+		nodes.add(Star4());
+		nodes.add(Star4());
 		return proto;
 	}
 }

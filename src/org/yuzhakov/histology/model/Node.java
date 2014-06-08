@@ -15,18 +15,18 @@ public class Node {
 	private int[][] edges;
 	private int edgesCount;
 
-	public Node(NodePrototype prototype, double height, Vertex offset) {
+	public Node(NodePrototype prototype, double height, double angle, Vertex offset) {
 		super();
 		this.prototype = prototype;
 		this.height = height;
 		this.offset = offset;
 		
 		Vertex[] bv = prototype.getBottomTopology().getCoordinates();
-		bottomLayer = copyWithOffset(bv, offset);
+		bottomLayer = copyWithOffset(copyWithRotation(bv, angle), offset);
 		
 		Vertex[] uv = prototype.getUpperTopology().getCoordinates();
 		Vertex heightVertex = new Vertex(0, 0, height);
-		upperLayer = copyWithOffset(uv, Vertex.getSumm(offset, heightVertex));
+		upperLayer = copyWithOffset(copyWithRotation(uv, angle), Vertex.getSumm(offset, heightVertex));
 		
 		initVerticesCoordinates();
 		initFaces();
@@ -73,7 +73,16 @@ public class Node {
 		return height;
 	}
 	
-	private Vertex[] copyWithOffset(Vertex[] v, Vertex offset){
+	private static Vertex[] copyWithRotation(Vertex[] v, double angle){
+		Vertex[] result = new Vertex[v.length];
+		for (int i = 0; i < result.length; ++i){
+			result[i] = Vertex.rotate(v[i], angle);
+//			result[i] = v[i];
+		}
+		return result;
+	}
+	
+	private static Vertex[] copyWithOffset(Vertex[] v, Vertex offset){
 		Vertex[] result = new Vertex[v.length];
 		for (int i = 0; i < result.length; ++i){
 			result[i] = Vertex.getSumm(v[i], offset);

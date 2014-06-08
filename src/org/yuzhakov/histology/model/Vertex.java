@@ -57,6 +57,15 @@ public class Vertex {
 		return v;
 	}
 	
+	public static Vertex rotate(Vertex vertex, double angle){
+		Vertex v = new Vertex();
+		double radians = angle * Math.PI / 180;
+		v.X = vertex.X*Math.cos(radians) - vertex.Y*Math.sin(radians);
+		v.Y = vertex.X*Math.sin(radians) + vertex.Y*Math.cos(radians);
+		v.Z = vertex.Z;
+		return v;
+	}
+	
 	public static Vertex getDifference(Vertex v1, Vertex v2){
 		Vertex v = new Vertex();
 		v.X = v1.X-v2.X;
