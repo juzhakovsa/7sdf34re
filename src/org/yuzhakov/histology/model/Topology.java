@@ -13,7 +13,7 @@ public class Topology {
 	private List<int[]> triangles;
 	
 	public Topology(Vertex[] v) {
-		int size = v.length;		
+		size = v.length;		
 		coordinates = new Vertex[size];
 		for (int i = 0; i < v.length; ++i){
 			coordinates[i] = new Vertex(v[i]); // copy

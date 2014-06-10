@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.JRModelConverter;
 import org.yuzhakov.histology.model.ModelCut;
@@ -28,16 +29,20 @@ public class JRealityComponent extends JPanel{
 
 	public JRealityComponent() {
 		super(new BorderLayout());
-		List<Double> heights = new ArrayList<>();
-    	heights.add(new Double(1));
-    	heights.add(new Double(1));
-    	heights.add(new Double(1));
-    	Cell cell = new Cell(Samples.star4Cell(), heights, 0, new Vertex());
-    	
-		SceneGraphComponent world = JRModelConverter.getSGC(cell);
+		
+		long time = System.currentTimeMillis();
+    	ArrayList<Double> heights = new ArrayList<>();
+    	heights.add(0.0);
+    	heights.add(2.0);
+    	heights.add(3.0);
+    	heights.add(5.0);
+		Cell cell = new Cell(Samples.Star4(3), heights, 0, new Vertex());
+		JrCell jrCell = new JrCell(cell);
+		time = System.currentTimeMillis() - time;
+		System.out.println(time);
 		
 		View.setTitle("The Icosahedron");
-		viewer = JRViewer.createJRViewer(world);
+		viewer = JRViewer.createJRViewer(jrCell.getSceneGraphComponent());
 		viewer.startupLocal();
 		Viewer v = viewer.getViewer();
 		viewingComponent = (Component) v.getViewingComponent();

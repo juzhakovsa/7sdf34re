@@ -1,6 +1,11 @@
 package org.yuzhakov.histology;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.yuzhakov.histology.gui.MainFrame;
+import org.yuzhakov.histology.gui.jreality.JrCell;
+import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.Node;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.samples.Samples;
@@ -12,14 +17,6 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	MainFrame mainFrame = new MainFrame();
-//				Node node = new Node(Samples.Star4(), 2, 0, new Vertex());
-//				long time = System.currentTimeMillis();
-//				for (int i = 0; i < 10000; ++i){
-//					Tetgen tetgen = new Tetgen(node);
-//					tetgen.tetrahedralize("");
-//				}
-//				time = System.currentTimeMillis() - time;
-//				System.out.println(time);
 			}
         });
 	}

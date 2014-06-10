@@ -29,27 +29,12 @@ public class JRModelConverter {
 	
 	public static SceneGraphComponent getSGC(Cell cell){
 		final SceneGraphComponent cellSgc = SceneGraphUtility.createFullSceneGraphComponent();
-		for (Node node:cell.getNodes()){
-			IndexedFaceSet indexedFaceSet = getGeometry(node);
-			SceneGraphComponent nodeSgc = SceneGraphUtility.createFullSceneGraphComponent();
-			nodeSgc.setGeometry(indexedFaceSet);
-			cellSgc.addChild(nodeSgc);
-		}
-		Thread thread = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				SceneGraphComponent sgc = cellSgc.getChildComponents().get(0);
-				sgc.setGeometry(Primitives.icosahedron());
-			}
-		});
-		thread.start();
+//		for (Node node:cell.getNodes()){
+//			IndexedFaceSet indexedFaceSet = getGeometry(node);
+//			SceneGraphComponent nodeSgc = SceneGraphUtility.createFullSceneGraphComponent();
+//			nodeSgc.setGeometry(indexedFaceSet);
+//			cellSgc.addChild(nodeSgc);
+//		}
 		cellSgc.getAppearance().setAttribute(POLYGON_SHADER+"."+DIFFUSE_COLOR, Color.GREEN);
 		cellSgc.getAppearance().setAttribute(LINE_SHADER+"."+DIFFUSE_COLOR, Color.BLACK);
 		cellSgc.getAppearance().setAttribute(LINE_SHADER+"."+TUBE_RADIUS, .01);

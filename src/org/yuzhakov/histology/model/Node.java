@@ -77,7 +77,6 @@ public class Node {
 		Vertex[] result = new Vertex[v.length];
 		for (int i = 0; i < result.length; ++i){
 			result[i] = Vertex.rotate(v[i], angle);
-//			result[i] = v[i];
 		}
 		return result;
 	}
