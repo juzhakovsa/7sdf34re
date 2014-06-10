@@ -1,5 +1,6 @@
 package org.yuzhakov.histology.model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class Cell {
 
 	public List<Node> getNodes() {
 		return nodes;
+	}
+	
+	public Color getColor(){
+		return prototype.getColor();
 	}
 	
 }

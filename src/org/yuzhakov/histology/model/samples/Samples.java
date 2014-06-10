@@ -31,8 +31,8 @@ public class Samples {
 		Vertex u5 = new Vertex(-1.8369701987210297E-16, -1.0, 0.0);
 		Vertex u6 = new Vertex(0.8660254037844388, -0.5, 0.0);
 		
-		Topology bottom = Topology.getTopology(new Vertex[]{b1,b2,b3,b4,b5,b6});
-		Topology upper = Topology.getTopology(new Vertex[]{u1,u2,u3,u4,u5,u6});
+		Topology bottom = new Topology(new Vertex[]{b1,b2,b3,b4,b5,b6});
+		Topology upper = new Topology(new Vertex[]{u1,u2,u3,u4,u5,u6});
 		
 		int[][] mapping = new int[][]{
 				{0,0},
@@ -63,8 +63,8 @@ public class Samples {
 		Vertex u2 = new Vertex(-0.8660254037844385, 0.5, 0.0);
 		Vertex u3 = new Vertex(0, -2.0, 0.0);
 		
-		Topology bottom = Topology.getTopology(new Vertex[]{b1,b2,b3,b4,b5,b6});
-		Topology upper = Topology.getTopology(new Vertex[]{u1,u2,u3});
+		Topology bottom = new Topology(new Vertex[]{b1,b2,b3,b4,b5,b6});
+		Topology upper = new Topology(new Vertex[]{u1,u2,u3});
 		
 		int[][] mapping = new int[][]{
 				{0,0},
@@ -84,7 +84,7 @@ public class Samples {
 	}
 	
 	public static NodePrototype Star4(){		
-		Topology bottom = Topology.getTopology(new Vertex[]{
+		Topology bottom = new Topology(new Vertex[]{
 				new Vertex(1, 0, 0),
 				new Vertex(0.25, 0.25, 0),
 				new Vertex(0, 1, 0),
@@ -94,7 +94,7 @@ public class Samples {
 				new Vertex(0, -1, 0),
 				new Vertex(0.25, -0.25, 0)
 		});
-		Topology upper = Topology.getTopology(new Vertex[]{
+		Topology upper = new Topology(new Vertex[]{
 				new Vertex(1, 0, 0),
 				new Vertex(0.25, 0.25, 0),
 				new Vertex(0, 1, 0),

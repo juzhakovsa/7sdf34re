@@ -72,14 +72,4 @@ public class TopologyRotator {
 			return value.size();
 		}
 	}
-	
-	public static Topology getTestTopology(){
-		Topology topology = new Topology(8);
-		double[] edges = new double[]{
-			3.0, 4.0, 10.0, 8.0, 7.0, 10.0, 8.0, 10.0,
-		};
-		topology.setEdges(edges);
-		topology.normalize();
-		return topology;
-	}
 }

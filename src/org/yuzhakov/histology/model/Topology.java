@@ -12,11 +12,16 @@ public class Topology {
 	private Vertex[] coordinates;
 	private List<int[]> triangles;
 	
-	public Topology(int size) {
-		this.size = size;
-		edges = new double[size];
-		angles = new double[size];
+	public Topology(Vertex[] v) {
+		int size = v.length;		
 		coordinates = new Vertex[size];
+		for (int i = 0; i < v.length; ++i){
+			coordinates[i] = new Vertex(v[i]); // copy
+		}
+		triangles = Triangulation.triangulate(v);	
+		
+//		edges = getEdges(v);
+//		angles = getAngles(v);
 	}
 
 	public int getSize() {
@@ -56,19 +61,6 @@ public class Topology {
 			coordinates[i].multiply(1/maxValue);
 		}
 	}
-
-	public static Topology getTopology(Vertex[] v){
-		int size = v.length;		
-		Topology topology = new Topology(size);
-		topology.edges = getEdges(v);
-		topology.angles = getAngles(v);
-		for (int i = 0; i < v.length; ++i){
-			topology.coordinates[i] = new Vertex(v[i]);
-		}
-		topology.triangles = Triangulation.triangulate(v);
-//		topology.normalize();
-		return topology;
-	}
 	
 	private static double[] getEdges(Vertex[] v){
 		int size = v.length;
@@ -101,9 +93,5 @@ public class Topology {
 			angles[c] = Util.round(angles[c]);
 		}
 		return angles;
-	}
-
-	public void setEdges(double[] edges) {
-		this.edges = edges;
 	}
 }
