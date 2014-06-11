@@ -17,18 +17,6 @@ public class Cell {
 		this.angle = angle;
 	}
 	
-//	private void initNodes(CellPrototype prototype, List<Double> heights, double angle, Vertex offset){
-//		List<NodePrototype> prototypes = prototype.getNodes();
-//		double heightOffset = 0;
-//		for (int i = 0; i < prototypes.size(); ++i){
-//			NodePrototype prot = prototypes.get(i);
-//			double height = heights.get(i);
-//			Node node = new Node(prot, height, angle, Vertex.getSumm(offset, new Vertex(0,0,heightOffset)));
-//			heightOffset += height;
-//			nodes.add(i, node);
-//		}
-//	}
-	
 	public List<Vertex[]> getTopologiesVertices(){
 		List<Vertex[]> vertexs = new ArrayList<>();
 		int level = 0;
@@ -66,15 +54,11 @@ public class Cell {
 	}
 	
 	public int getNumberOfVertexes(int till_level){
-		int s = 0;
-		for (int i = 0; i < till_level;++i){
-			s += prototype.getTopologies().get(i).getSize();
-		}
-		return s;
+		return prototype.getNumberOfVertexes(till_level);
 	}
 	
 	public int getNumberOfVertexes(){
-		return getNumberOfVertexes(prototype.getTopologies().size());
+		return prototype.getNumberOfVertexes();
 	}
 	
 	private static Vertex[] copyWithOffsetRotationHeight(Vertex[] v, Vertex offset, double angle, double Z){

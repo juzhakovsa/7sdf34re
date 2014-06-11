@@ -2,9 +2,11 @@ package org.yuzhakov.histology;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.omg.CosNaming.IstringHelper;
-import org.yuzhakov.histology.model.Node;
+import org.yuzhakov.histology.model.CellPrototype;
+import org.yuzhakov.histology.model.Vertex;
 
 public class Tetgen {
 	private double[] vertexes;
@@ -23,24 +25,27 @@ public class Tetgen {
 				new File("lib/JavaTetgen.dll").getAbsolutePath());
 	}
 	
-	public Tetgen(Node node){
+	public Tetgen(CellPrototype cellPrototype){
 		//vertexes
-		numberOfVertexes = node.getVertexCount();
+		numberOfVertexes = cellPrototype.getNumberOfVertexes();
 		vertexes = new double[numberOfVertexes*3];
-		double[][] nodeCoords = node.getVerticesCoordinates();
 		int i = 0;
 		int j = 0;
-		for (; i < numberOfVertexes; ++i){
-			vertexes[j] = nodeCoords[i][0];
-			vertexes[j+1] = nodeCoords[i][1];
-			vertexes[j+2] = nodeCoords[i][2];
-			j+=3;
+		int layer = 0;
+		for (Vertex[] topologyCoordinates : cellPrototype.getTopologiesVertices()){
+			for (Vertex v:topologyCoordinates){
+				vertexes[i] = v.X;
+				vertexes[i+1] = v.Y;
+				vertexes[i+2] = layer;
+				i+=3;
+			}
+			++layer;
 		}
 		
 		//faces
-		numberOfFaces = node.getFacesCount();
+		int[][] nodeFaces = cellPrototype.getFaceIndices().toArray(new int[0][0]);
+		numberOfFaces = nodeFaces.length;
 		facesSizes = new int[numberOfFaces];
-		int[][] nodeFaces = node.getFaces();
 		int sum = 0;
 		i = 0;
 		for (; i < numberOfFaces; ++i){

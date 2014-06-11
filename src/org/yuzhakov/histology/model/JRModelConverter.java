@@ -13,20 +13,6 @@ import static de.jreality.shader.CommonAttributes.*;
 
 public class JRModelConverter {
 	
-	public static IndexedFaceSet getGeometry(Node node){
-		IndexedFaceSetFactory ifsf = new IndexedFaceSetFactory();
-		ifsf.setVertexCount(node.getVertexCount());
-		ifsf.setFaceCount(node.getFacesCount());
-		ifsf.setVertexCoordinates(node.getVerticesCoordinates());
-		ifsf.setFaceIndices(node.getFaces());
-		ifsf.setEdgeCount(node.getEdgesCount());
-		ifsf.setEdgeIndices(node.getEdges());
-		ifsf.setGenerateFaceNormals(true);
-		ifsf.update();
-		
-		return ifsf.getIndexedFaceSet();
-	}
-	
 	public static SceneGraphComponent getSGC(Cell cell){
 		final SceneGraphComponent cellSgc = SceneGraphUtility.createFullSceneGraphComponent();
 //		for (Node node:cell.getNodes()){

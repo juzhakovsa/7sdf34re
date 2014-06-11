@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.model.Cell;
-import org.yuzhakov.histology.model.Topology;
 import org.yuzhakov.histology.model.Vertex;
 
 import de.jreality.geometry.IndexedFaceSetFactory;
@@ -20,9 +19,10 @@ public class JrCell {
 		this.cell = cell;
 		double[][] coordinates = getVertexCoordinates(cell);
 		int[][] faceIndices = getFaceIndices(cell);
+		int[][] edges = getEdges(cell);
 		
 		sceneGraphComponent = SceneGraphUtility.createFullSceneGraphComponent();
-		sceneGraphComponent.setGeometry(getIndexedFaceSet(coordinates, faceIndices));
+		sceneGraphComponent.setGeometry(getIndexedFaceSet(coordinates, faceIndices, edges));
 	}
 	
 	public Cell getCell() {
@@ -45,75 +45,67 @@ public class JrCell {
 		
 		return coordinates.toArray(new double[0][0]);
 	}
-	
 	private static int[][] getFaceIndices(Cell cell){
-		ArrayList<int[]> facesList = new ArrayList<>();
-		facesList.addAll(getBottomFaceIndices(cell));
-		facesList.addAll(getTopFaceIndices(cell));
-		int numberOfLayers = cell.getNumberOfTopologies() - 1;
-		for (int i = 0; i < numberOfLayers; ++i){
-			facesList.addAll(getSideFaceIndices(cell, i));
+		return cell.getPrototype().getFaceIndices().toArray(new int[0][0]);
+	}
+	
+	private static int[][] getEdges(Cell cell){
+		ArrayList<int[]> edgesList = new ArrayList<>();
+		for (int i = 0; i < cell.getNumberOfTopologies();++i){
+			edgesList.addAll(getTopologyEdges(cell, i));
 		}
-		return facesList.toArray(new int[0][0]);
-	}
-	
-	private static List<int[]> getBottomFaceIndices(Cell cell){
-		return cell.getPrototype().getBottomTopology().getTriangles();
-	}
-	
-	private static List<int[]> getTopFaceIndices(Cell cell){
-		int offset = cell.getNumberOfVertexes(cell.getNumberOfTopologies() - 1);
-		List<int[]> topFaceIndices = new ArrayList<>();
-		for (int[] triangle : cell.getPrototype().getTopTopology().getTriangles()){
-			int[] face = new int[triangle.length];
-			for (int i = 0; i < triangle.length;++i){
-				face[i] = triangle[i] + offset;
-			}
-			topFaceIndices.add(face);
+		for (int i = 0; i < cell.getNumberOfTopologies() - 1;++i){
+			edgesList.addAll(getSideEdges(cell, i));
 		}
-		return topFaceIndices;
+		return edgesList.toArray(new int[0][0]);
 	}
 	
-	private static List<int[]> getSideFaceIndices(Cell cell, int layer){
+	private static List<int[]> getTopologyEdges(Cell cell, int topology){
+		int offset = cell.getNumberOfVertexes(topology);
+		int topologySize = cell.getPrototype().getTopologies().get(topology).getSize();
+		List<int[]> topologyEdges = new ArrayList<>();
+		int i;
+		for (i = offset; i < offset+topologySize-1; ++i){
+			int[] edge = new int[2];
+			edge[0] = i;
+			edge[1] = i+1;
+			topologyEdges.add(edge);
+		}
+		int[] edge = new int[2];
+		edge[0] = i;
+		edge[1] = offset;
+		topologyEdges.add(edge);
+		
+		return topologyEdges;
+	}
+	
+	private static List<int[]> getSideEdges(Cell cell, int layer){
 		int offsetBottom = cell.getNumberOfVertexes(layer);
 		int offsetTop = cell.getNumberOfVertexes(layer+1);
 		int[][] layerMapping = cell.getPrototype().getMappings().get(layer);
-		List<int[]> sideFaceIndices = new ArrayList<>();
+		List<int[]> sideEdges = new ArrayList<>();
 		
 		int f = 0;
-		for (; f < layerMapping.length - 1; ++f){
-			int[] map1 = layerMapping[f];
-			int[] map2 = layerMapping[f+1];
-			int[] face = new int[4];
-			face[0] = offsetBottom+map1[0];
-			face[1] = offsetBottom+map2[0];
-			face[2] = offsetTop+map2[1];
-			face[3] = offsetTop+map1[1];
-			sideFaceIndices.add(face);
+		for (; f < layerMapping.length; ++f){
+			int[] map = layerMapping[f];
+			int[] edge = new int[2];
+			edge[0] = offsetBottom+map[0];
+			edge[1] = offsetTop+map[1];
+			sideEdges.add(edge);
 		}
 		
-		int[] map1 = layerMapping[f];
-		int[] map2 = layerMapping[0];
-		int[] face = new int[4];
-		face[0] = offsetBottom+map1[0];
-		face[1] = offsetBottom+map2[0];
-		face[2] = offsetTop+map2[1];
-		face[3] = offsetTop+map1[1];
-		sideFaceIndices.add(face);
-		
-		return sideFaceIndices;
+		return sideEdges;
 	}
 	
-	private static IndexedFaceSet getIndexedFaceSet(double[][] coordinates, int[][] faceIndices){
+	private static IndexedFaceSet getIndexedFaceSet(double[][] coordinates, int[][] faceIndices, int[][] edges){
 		IndexedFaceSetFactory ifsf = new IndexedFaceSetFactory();
 		ifsf.setVertexCount(coordinates.length);
 		ifsf.setFaceCount(faceIndices.length);
+		ifsf.setEdgeCount(edges.length);
 		ifsf.setVertexCoordinates(coordinates);
 		ifsf.setFaceIndices(faceIndices);
-//		ifsf.setEdgeCount(node.getEdgesCount());
-//		ifsf.setEdgeIndices(node.getEdges());
+		ifsf.setEdgeIndices(edges);
 		ifsf.setGenerateFaceNormals(true);
-		ifsf.setGenerateEdgesFromFaces(true);
 		ifsf.update();
 		
 		return ifsf.getIndexedFaceSet();
