@@ -13,6 +13,7 @@ import org.la4j.vector.dense.BasicVector;
 import org.yuzhakov.histology.gui.MainFrame;
 import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.model.Cell;
+import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.ModelCut;
 import org.yuzhakov.histology.model.cut.Segment;
@@ -25,23 +26,7 @@ public class Main {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-//            	MainFrame mainFrame = new MainFrame();
-				Vertex[] corners = new Vertex[]{
-						new Vertex(0,0,0),
-						new Vertex(1,0,0),
-						new Vertex(0,1,0),
-						new Vertex(0,0,1)
-				};
-				Tetrahedron tetrahedron = new Tetrahedron(corners);
-				List<Tetrahedron> tetrahedrons = new ArrayList<>();
-				tetrahedrons.add(tetrahedron);
-				ModelCut modelCut = new ModelCut();
-				modelCut.setTetrahedrons(tetrahedrons);
-				modelCut.setOffset(new Vertex(0.2,0.1,0.3));
-				modelCut.setNormal(new Vertex(1,2,3));
-				for (Vertex v : modelCut.getCut().get(0)){
-					System.out.println(v);
-				}
+            	MainFrame mainFrame = new MainFrame();
 			}
         });
 	}

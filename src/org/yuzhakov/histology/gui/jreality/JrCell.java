@@ -1,5 +1,8 @@
 package org.yuzhakov.histology.gui.jreality;
 
+import static de.jreality.shader.CommonAttributes.*;
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +10,7 @@ import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.Vertex;
 
 import de.jreality.geometry.IndexedFaceSetFactory;
+import de.jreality.scene.Appearance;
 import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.util.SceneGraphUtility;
@@ -23,6 +27,7 @@ public class JrCell {
 		
 		sceneGraphComponent = SceneGraphUtility.createFullSceneGraphComponent();
 		sceneGraphComponent.setGeometry(getIndexedFaceSet(coordinates, faceIndices, edges));
+		setAppearance(sceneGraphComponent.getAppearance());
 	}
 	
 	public Cell getCell() {
@@ -95,6 +100,13 @@ public class JrCell {
 		}
 		
 		return sideEdges;
+	}
+	
+	private static void setAppearance(Appearance appearance){
+		appearance.setAttribute(POLYGON_SHADER+"."+DIFFUSE_COLOR, Color.GREEN);
+		appearance.setAttribute(LINE_SHADER+"."+DIFFUSE_COLOR, Color.BLACK);
+		appearance.setAttribute(LINE_SHADER+"."+TUBE_RADIUS, .01);
+		appearance.setAttribute(VERTEX_DRAW, false);
 	}
 	
 	private static IndexedFaceSet getIndexedFaceSet(double[][] coordinates, int[][] faceIndices, int[][] edges){

@@ -1,5 +1,6 @@
 package org.yuzhakov.histology;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.omg.CosNaming.IstringHelper;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.cut.Tetrahedron;
 
 public class Tetgen {
 	private double[] vertexes;
@@ -19,6 +21,7 @@ public class Tetgen {
 	private int[] tetrahedrons;
 	private int numberOfTetrahedrons;
 	
+	private Color color;
 	
 	static {
 		System.load(
@@ -26,6 +29,7 @@ public class Tetgen {
 	}
 	
 	public Tetgen(CellPrototype cellPrototype){
+		color = cellPrototype.getColor();
 		//vertexes
 		numberOfVertexes = cellPrototype.getNumberOfVertexes();
 		vertexes = new double[numberOfVertexes*3];
@@ -95,6 +99,28 @@ public class Tetgen {
 
 	public int getNumberOfTetrahedrons() {
 		return numberOfTetrahedrons;
+	}
+	
+	public List<Tetrahedron> getTetrahedronList(){
+		ArrayList<Tetrahedron> tetraList = new ArrayList<>();
+		for (int i = 0; i < numberOfTetrahedrons*4;i+=4){
+			Vertex[] tetrahedron = new Vertex[]{
+					getVertex(tetrahedrons[i]),
+					getVertex(tetrahedrons[i+1]),
+					getVertex(tetrahedrons[i+2]),
+					getVertex(tetrahedrons[i+3]),
+			};
+			tetraList.add(new Tetrahedron(tetrahedron, color));
+		}
+		return tetraList;
+	}
+	
+	private Vertex getVertex(int index){
+		return new Vertex(
+				vertexes[index*3],
+				vertexes[index*3 + 1],
+				vertexes[index*3 + 2]
+				);
 	}
 
 	//For native executing: methods looks better in JNI

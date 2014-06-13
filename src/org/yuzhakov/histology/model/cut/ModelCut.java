@@ -41,7 +41,10 @@ public class ModelCut {
 	private List<Vertex> cutTetrahedron(Tetrahedron tetrahedron){
 		ArrayList<Vertex> intersections = new ArrayList<>();
 		for (Segment segment : tetrahedron.getSegments()){
-			intersections.addAll(cutSegment(segment));
+			for (Vertex v : cutSegment(segment)){
+				if (!intersections.contains(v))
+					intersections.add(v);
+			}
 		}
 		return intersections;
 	}
@@ -73,4 +76,87 @@ public class ModelCut {
 		intersections.add(result);
 		return intersections;
 	}
+	
+	public List<Vertex> getPlanePoints(double X, double Y, double Z){
+		ArrayList<Vertex> points = new ArrayList<>();
+		//Z
+		double[][] params = new double[][]{
+				{X,Y},
+				{-X,Y},
+				{-X,-Y},
+				{X,-Y},
+		};
+		for (int i = 0; i < params.length && points.size() < 4; ++i){
+			Vertex v = getZCoordinate(params[i][0], params[i][1]);
+			if (v != null)
+				points.add(v);
+		}
+		//Y
+		params = new double[][]{
+				{X,Z},
+				{-X,Z},
+				{-X,-Z},
+				{X,-Z},
+		};
+		for (int i = 0; i < params.length && points.size() < 4; ++i){
+			Vertex v = getYCoordinate(params[i][0], params[i][1]);
+			if (v != null)
+				points.add(v);
+		}
+		//X
+		params = new double[][]{
+				{Y,Z},
+				{-Y,Z},
+				{-Y,-Z},
+				{Y,-Z},
+		};
+		for (int i = 0; i < params.length && points.size() < 4; ++i){
+			Vertex v = getXCoordinate(params[i][0], params[i][1]);
+			if (v != null)
+				points.add(v);
+		}
+		
+		return points;
+	}
+	
+	private Vertex getXCoordinate(double y, double z){
+		double D = -(normal.X*offset.X + normal.Y*offset.Y + normal.Z*offset.Z);
+		double S = normal.Y*y + normal.Z*z + D;
+		if (Math.abs(normal.X) < Settings.DEFAULT_PRECISION){
+			if (Math.abs(S) < Settings.DEFAULT_PRECISION){
+				return new Vertex(0,y,z); //ANY
+			}
+			return null; //NONE
+		}
+		double x = -S/normal.X;
+		return new Vertex(x,y,z);
+	}
+	
+	private Vertex getYCoordinate(double x, double z){
+		double D = -(normal.X*offset.X + normal.Y*offset.Y + normal.Z*offset.Z);
+		double S = normal.X*x + normal.Z*z + D;
+		if (Math.abs(normal.Y) < Settings.DEFAULT_PRECISION){
+			if (Math.abs(S) < Settings.DEFAULT_PRECISION){
+				return new Vertex(x,0,z); //ANY
+			}
+			return null; //NONE
+		}
+		double y = -S/normal.Y;
+		return new Vertex(x,y,z);
+	}
+	
+	private Vertex getZCoordinate(double x, double y){
+		double D = -(normal.X*offset.X + normal.Y*offset.Y + normal.Z*offset.Z);
+		double S = normal.X*x + normal.Y*y + D;
+		if (Math.abs(normal.Z) < Settings.DEFAULT_PRECISION){
+			if (Math.abs(S) < Settings.DEFAULT_PRECISION){
+				return new Vertex(x,y,0); //ANY
+			}
+			return null; //NONE
+		}
+		double z = -S/normal.Z;
+		return new Vertex(x,y,z);
+	}
+	
+	
 }
