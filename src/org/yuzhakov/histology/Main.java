@@ -10,6 +10,7 @@ import org.la4j.matrix.Matrix;
 import org.la4j.matrix.dense.Basic2DMatrix;
 import org.la4j.vector.Vector;
 import org.la4j.vector.dense.BasicVector;
+import org.yuzhakov.histology.gui.AxesFrame;
 import org.yuzhakov.histology.gui.MainFrame;
 import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.model.Cell;
@@ -26,7 +27,8 @@ public class Main {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	MainFrame mainFrame = new MainFrame();
+//            	MainFrame mainFrame = new MainFrame();
+            	AxesFrame axesFrame = new AxesFrame();
 			}
         });
 	}
