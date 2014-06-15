@@ -12,6 +12,7 @@ import org.la4j.vector.Vector;
 import org.la4j.vector.dense.BasicVector;
 import org.yuzhakov.histology.gui.AxesFrame;
 import org.yuzhakov.histology.gui.MainFrame;
+import org.yuzhakov.histology.gui.ModelTestFrame;
 import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
@@ -28,7 +29,8 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
 //            	MainFrame mainFrame = new MainFrame();
-            	AxesFrame axesFrame = new AxesFrame();
+//            	AxesFrame axesFrame = new AxesFrame();
+            	ModelTestFrame modelTestFrame = new ModelTestFrame();
 			}
         });
 	}

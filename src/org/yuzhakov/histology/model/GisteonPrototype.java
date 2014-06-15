@@ -7,6 +7,7 @@ public class GisteonPrototype {
 	private List<CellPrototype> cells = new ArrayList<>();
 	private List<Vertex> offsets = new ArrayList<>();
 	private List<Double> heights = new ArrayList<>();
+	private List<Double> angles = new ArrayList<>();
 	
 	public List<CellPrototype> getCells() {
 		return cells;

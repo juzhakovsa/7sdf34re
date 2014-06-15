@@ -38,10 +38,14 @@ public class AxesFrame extends JFrame{
 	public AxesFrame() {
 		super("Histology 3D");
 		
+		final ModelCut modelCut = new ModelCut();
+		final JrCutPlane cutPlane = new JrCutPlane(modelCut);
+		
 		final Axes axes = new Axes();
 		axes.update();
 		SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
 		world.addChild(axes.getSceneGraphComponent());
+		world.addChild(cutPlane.getSceneGraphComponent());
 		
 		setJMenuBar(new MainMenuBar());
 		
@@ -58,8 +62,9 @@ public class AxesFrame extends JFrame{
 					return;
 				double A = (double)sliderA.getValue() * Math.PI / 90;
 				axes.setA(A);
-				axes.update();
-				
+				Vertex v = axes.update();
+				modelCut.setNormal(v);
+				cutPlane.update();
 			}
 		});
 		
@@ -72,48 +77,25 @@ public class AxesFrame extends JFrame{
 					return;
 				double B = (double)sliderB.getValue() * Math.PI / 90;
 				axes.setB(B);
-				axes.update();
-				
+				Vertex v = axes.update();
+				modelCut.setNormal(v);
+				cutPlane.update();
 			}
 		});
-//		
-//		sliderB.addChangeListener(new ChangeListener() {
-//			
-//			@Override
-//			public void stateChanged(ChangeEvent event) {
-//				JSlider slider = (JSlider) event.getSource();
-//				if (slider.getValueIsAdjusting())
-//					return;
-//				double A = (double)sliderA.getValue() * Math.PI / 180;
-//				double B = (double)sliderB.getValue() * 2 * Math.PI / 180;
-//				
-//				double X = Math.cos(A)*Math.cos(B);
-//				double Y = Math.cos(A)*Math.sin(B);
-//				double Z = Math.sin(A);
-//				
-//				modelCut.setNormal(new Vertex(X,Y,Z));
-//				cutPlane.update();
-//				for (Vertex[] tet : modelCut.getCut()) {
-//					for (Vertex v : tet) {
-//						System.out.println(v);
-//					}
-//					System.out.println("---------------------------");
-//				}
-//			}
-//		});
-//		
-//		sliderZ.addChangeListener(new ChangeListener() {
-//			
-//			@Override
-//			public void stateChanged(ChangeEvent event) {
-//				JSlider slider = (JSlider) event.getSource();
-//				if (slider.getValueIsAdjusting())
-//					return;
-//				double Z = (double)slider.getValue() * 2 / 100;
-//				modelCut.setOffset(new Vertex(0,0,Z));
-//				cutPlane.update();
-//			}
-//		});
+		
+		sliderZ.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent event) {
+				JSlider slider = (JSlider) event.getSource();
+				if (slider.getValueIsAdjusting())
+					return;
+				double Z = (double)slider.getValue() * 2 / 100;
+				modelCut.setOffset(new Vertex(0,0,Z));
+				cutPlane.update();
+			}
+		});
+
 		
 		add(mainPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

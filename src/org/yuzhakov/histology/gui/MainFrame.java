@@ -15,6 +15,7 @@ import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 
 import org.yuzhakov.histology.Tetgen;
+import org.yuzhakov.histology.gui.jreality.JRUtils;
 import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.model.Cell;
@@ -37,7 +38,6 @@ public class MainFrame extends JFrame{
 	public MainFrame() {
 		super("Histology 3D");
 		
-		long time = System.currentTimeMillis();
 		ArrayList<Double> heights = new ArrayList<>();
     	heights.add(0.0);
     	heights.add(2.0);
@@ -47,8 +47,6 @@ public class MainFrame extends JFrame{
 		tetgen.tetrahedralize(null);
 
 		final ModelCut modelCut = new ModelCut();
-		modelCut.setOffset(new Vertex(0,0,0));
-		modelCut.setNormal(new Vertex(0,0,1));
 		modelCut.setTetrahedrons(tetgen.getTetrahedronList());
 		for (Vertex[] tet : modelCut.getCut()) {
 			for (Vertex v : tet) {
@@ -56,10 +54,12 @@ public class MainFrame extends JFrame{
 			}
 			System.out.println("---------------------------");
 		}
+		
 		final JrCutPlane cutPlane = new JrCutPlane(modelCut);
-		SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
-		world.addChild(cutPlane.getSceneGraphComponent());
-		world.addChild(jrCell.getSceneGraphComponent());
+		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
+		world.setGeometry(JRUtils.getIndexedFaceSet(modelCut.getCut()));
+//		world.addChild(cutPlane.getSceneGraphComponent());
+//		world.addChild(jrCell.getSceneGraphComponent());
 		
 		setJMenuBar(new MainMenuBar());
 		

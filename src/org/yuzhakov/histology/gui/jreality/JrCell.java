@@ -27,7 +27,8 @@ public class JrCell {
 		
 		sceneGraphComponent = SceneGraphUtility.createFullSceneGraphComponent();
 		sceneGraphComponent.setGeometry(getIndexedFaceSet(coordinates, faceIndices, edges));
-		setAppearance(sceneGraphComponent.getAppearance());
+		setCommonAppearance(sceneGraphComponent.getAppearance());
+		setAppearanceColor(sceneGraphComponent.getAppearance(), cell.getColor());
 	}
 	
 	public Cell getCell() {
@@ -37,7 +38,6 @@ public class JrCell {
 	public SceneGraphComponent getSceneGraphComponent() {
 		return sceneGraphComponent;
 	}
-
 
 
 	private static double[][] getVertexCoordinates(Cell cell){
@@ -102,11 +102,14 @@ public class JrCell {
 		return sideEdges;
 	}
 	
-	private static void setAppearance(Appearance appearance){
-		appearance.setAttribute(POLYGON_SHADER+"."+DIFFUSE_COLOR, Color.GREEN);
+	private static void setCommonAppearance(Appearance appearance){
 		appearance.setAttribute(LINE_SHADER+"."+DIFFUSE_COLOR, Color.BLACK);
 		appearance.setAttribute(LINE_SHADER+"."+TUBE_RADIUS, .01);
 		appearance.setAttribute(VERTEX_DRAW, false);
+	}
+	
+	private static void setAppearanceColor(Appearance appearance, Color color){
+		appearance.setAttribute(POLYGON_SHADER+"."+DIFFUSE_COLOR, color);
 	}
 	
 	private static IndexedFaceSet getIndexedFaceSet(double[][] coordinates, int[][] faceIndices, int[][] edges){

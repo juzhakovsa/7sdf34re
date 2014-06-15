@@ -11,6 +11,11 @@ public class ModelCut {
 	private Vertex offset;
 	private List<Tetrahedron> tetrahedrons;
 	
+	public ModelCut(){
+		offset = new Vertex();
+		normal = new Vertex(0,0,1);
+	}
+	
 	public Vertex getNormal() {
 		return normal;
 	}

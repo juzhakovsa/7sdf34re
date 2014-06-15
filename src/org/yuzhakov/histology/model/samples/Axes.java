@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.la4j.matrix.Matrix;
 import org.la4j.matrix.dense.Basic2DMatrix;
+import org.yuzhakov.histology.model.Vertex;
 
 import de.jreality.geometry.IndexedLineSetFactory;
 import de.jreality.scene.IndexedLineSet;
@@ -19,12 +20,7 @@ public class Axes {
 		sceneGraphComponent = SceneGraphUtility.createFullSceneGraphComponent();
 	}
 	
-	public void update(){
-//		List<Vertex> points = modelCut.getPlanePoints(10, 10, 10);
-//		double[][] coordinates = new double[points.size()][];
-//		for (int i = 0; i < coordinates.length; ++i){
-//			coordinates[i] = points.get(i).getCoordinates();
-//		}
+	public Vertex update(){
 		double[][] c = new double[][]{
 				{0,0,0},
 				{1,0,0},
@@ -53,6 +49,12 @@ public class Axes {
 		Basic2DMatrix res = (Basic2DMatrix) coordinates.multiply(rotA).multiply(rotB);
 		
 		sceneGraphComponent.setGeometry(getIndexedLineSet(res.toArray()));
+		
+		
+		return new Vertex(
+				res.getRow(3).get(0),
+				res.getRow(3).get(1),
+				res.getRow(3).get(2));
 	}
 	
 	public double getA() {
