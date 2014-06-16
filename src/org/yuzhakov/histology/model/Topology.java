@@ -1,5 +1,6 @@
 package org.yuzhakov.histology.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.Util;
@@ -18,7 +19,11 @@ public class Topology {
 		for (int i = 0; i < v.length; ++i){
 			coordinates[i] = new Vertex(v[i]); // copy
 		}
-		triangles = Triangulation.triangulate(v);	
+		if (v.length > 2)
+			triangles = Triangulation.triangulate(v);
+		else{
+			triangles = new ArrayList<>();
+		}
 		
 //		edges = getEdges(v);
 //		angles = getAngles(v);

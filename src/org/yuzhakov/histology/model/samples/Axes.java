@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.la4j.matrix.Matrix;
 import org.la4j.matrix.dense.Basic2DMatrix;
+import org.la4j.vector.dense.BasicVector;
 import org.yuzhakov.histology.model.Vertex;
 
 import de.jreality.geometry.IndexedLineSetFactory;
@@ -46,7 +47,15 @@ public class Axes {
 				{0,Math.sin(B),Math.cos(B)},
 				});
 		
-		Basic2DMatrix res = (Basic2DMatrix) coordinates.multiply(rotA).multiply(rotB);
+		Basic2DMatrix rot = (Basic2DMatrix) rotA.multiply(rotB);
+		
+		Basic2DMatrix res = (Basic2DMatrix) coordinates.multiply(rot);
+		
+		Basic2DMatrix transRot = (Basic2DMatrix) rot.transpose();
+		
+		BasicVector zAx = (BasicVector) res.getRow(2);
+		
+		BasicVector planar = (BasicVector) zAx.multiply(transRot);
 		
 		sceneGraphComponent.setGeometry(getIndexedLineSet(res.toArray()));
 		

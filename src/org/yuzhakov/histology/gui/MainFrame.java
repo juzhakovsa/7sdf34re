@@ -21,6 +21,7 @@ import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.cut.CutPlane;
 import org.yuzhakov.histology.model.cut.ModelCut;
 import org.yuzhakov.histology.model.samples.Samples;
 
@@ -40,22 +41,25 @@ public class MainFrame extends JFrame{
 		
 		ArrayList<Double> heights = new ArrayList<>();
     	heights.add(0.0);
+    	heights.add(1.0);
     	heights.add(2.0);
-		Cell cell = new Cell(Samples.Star4(1), heights, 0, new Vertex());
+		Cell cell = new Cell(Samples.Star4(2), heights, 0, new Vertex());
 		JrCell jrCell = new JrCell(cell);
 		Tetgen tetgen = new Tetgen(cell.getPrototype());
 		tetgen.tetrahedralize(null);
 
-		final ModelCut modelCut = new ModelCut();
+		final CutPlane cutPlane = new CutPlane();
+		cutPlane.construct();
+		final ModelCut modelCut = new ModelCut(cutPlane);
 		modelCut.setTetrahedrons(tetgen.getTetrahedronList());
-		for (Vertex[] tet : modelCut.getCut()) {
-			for (Vertex v : tet) {
-				System.out.println(v);
-			}
-			System.out.println("---------------------------");
-		}
+//		for (Vertex[] tet : modelCut.getCut()) {
+//			for (Vertex v : tet) {
+//				System.out.println(v);
+//			}
+//			System.out.println("---------------------------");
+//		}
 		
-		final JrCutPlane cutPlane = new JrCutPlane(modelCut);
+//		final JrCutPlane cutPlane = new JrCutPlane(modelCut);
 		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
 		world.setGeometry(JRUtils.getIndexedFaceSet(modelCut.getCut()));
 //		world.addChild(cutPlane.getSceneGraphComponent());
@@ -68,65 +72,44 @@ public class MainFrame extends JFrame{
 		mainPanel.add(getSliderPanel(), BorderLayout.EAST);
 		
 		sliderA.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent event) {
 				JSlider slider = (JSlider) event.getSource();
 				if (slider.getValueIsAdjusting())
 					return;
-				double A = (double)sliderA.getValue() * Math.PI / 180;
-				double B = (double)sliderB.getValue() * 2 * Math.PI / 180;
-				
-				double X = Math.cos(A)*Math.cos(B);
-				double Y = Math.cos(A)*Math.sin(B);
-				double Z = Math.sin(A);
-				
-				modelCut.setNormal(new Vertex(X,Y,Z));
-				cutPlane.update();
-				for (Vertex[] tet : modelCut.getCut()) {
-					for (Vertex v : tet) {
-						System.out.println(v);
-					}
-					System.out.println("---------------------------");
-				}
+				double A = (double) sliderA.getValue() * Math.PI / 90;
+				cutPlane.setA(A);
+				cutPlane.construct();
+				world.setGeometry(JRUtils.getIndexedFaceSet(modelCut.getCut()));
 			}
 		});
-		
+
 		sliderB.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent event) {
 				JSlider slider = (JSlider) event.getSource();
 				if (slider.getValueIsAdjusting())
 					return;
-				double A = (double)sliderA.getValue() * Math.PI / 180;
-				double B = (double)sliderB.getValue() * 2 * Math.PI / 180;
-				
-				double X = Math.cos(A)*Math.cos(B);
-				double Y = Math.cos(A)*Math.sin(B);
-				double Z = Math.sin(A);
-				
-				modelCut.setNormal(new Vertex(X,Y,Z));
-				cutPlane.update();
-				for (Vertex[] tet : modelCut.getCut()) {
-					for (Vertex v : tet) {
-						System.out.println(v);
-					}
-					System.out.println("---------------------------");
-				}
+				double B = (double) sliderB.getValue() * Math.PI / 90;
+				cutPlane.setB(B);
+				cutPlane.construct();
+				world.setGeometry(JRUtils.getIndexedFaceSet(modelCut.getCut()));
 			}
 		});
-		
+
 		sliderZ.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent event) {
 				JSlider slider = (JSlider) event.getSource();
 				if (slider.getValueIsAdjusting())
 					return;
-				double Z = (double)slider.getValue() * 2 / 100;
-				modelCut.setOffset(new Vertex(0,0,Z));
-				cutPlane.update();
+				double Z = (double) slider.getValue() * 2 / 100;
+				cutPlane.setZ(Z);
+				cutPlane.construct();
+				world.setGeometry(JRUtils.getIndexedFaceSet(modelCut.getCut()));
 			}
 		});
 		
@@ -141,10 +124,10 @@ public class MainFrame extends JFrame{
 	private JPanel getSliderPanel(){
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		sliderA = new JSlider(-90, 90, -90);
+		sliderA = new JSlider(-90, 90, 0);
 		sliderA.setName("Parameter A");
 		panel.add(sliderA);
-		sliderB = new JSlider(0, 180, 0);
+		sliderB = new JSlider(-90, 90, 0);
 		sliderB.setName("Parameter B");
 		panel.add(sliderB);
 		sliderZ = new JSlider(0, 100, 0);

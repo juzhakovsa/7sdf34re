@@ -1,32 +1,29 @@
 package org.yuzhakov.histology.model.cut;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.yuzhakov.histology.Settings;
 import org.yuzhakov.histology.model.Vertex;
 
 public class ModelCut {
-	private Vertex normal;
-	private Vertex offset;
+	private CutPlane cutPlane;
 	private List<Tetrahedron> tetrahedrons;
 	
-	public ModelCut(){
-		offset = new Vertex();
-		normal = new Vertex(0,0,1);
+	public ModelCut(CutPlane cutPlane){
+		this.cutPlane = cutPlane;
 	}
-	
-	public Vertex getNormal() {
-		return normal;
+		
+	public CutPlane getCutPlane() {
+		return cutPlane;
 	}
-	public void setNormal(Vertex normal) {
-		this.normal = normal;
-	}
-	public Vertex getOffset() {
-		return offset;
-	}
-	public void setOffset(Vertex offset) {
-		this.offset = offset;
+	public void setCutPlane(CutPlane cutPlane) {
+		this.cutPlane = cutPlane;
 	}
 	public List<Tetrahedron> getTetrahedrons() {
 		return tetrahedrons;
@@ -38,7 +35,12 @@ public class ModelCut {
 	public List<Vertex[]> getCut(){
 		ArrayList<Vertex[]> cuts = new ArrayList<>();
 		for (Tetrahedron tetrahedron : tetrahedrons){
-			cuts.add(cutTetrahedron(tetrahedron).toArray(new Vertex[0]));
+			List<Vertex> cut = cutTetrahedron(tetrahedron);
+			if (cut.size() < 3)
+				continue;
+			if (cut.size() > 3)
+				cut = orderVertexes(cut);
+			cuts.add(cut.toArray(new Vertex[0]));
 		}
 		return cuts;
 	}
@@ -55,6 +57,8 @@ public class ModelCut {
 	}
 	
 	private List<Vertex> cutSegment(Segment segment){
+		Vertex normal = cutPlane.getAxisZ();
+		Vertex offset = cutPlane.getOffset();
 		ArrayList<Vertex> intersections = new ArrayList<>();
 		double A = (normal.X*segment.vector.X + normal.Y*segment.vector.Y + normal.Z*segment.vector.Z);
 		double f = (normal.X*segment.start.X + normal.Y*segment.start.Y + normal.Z*segment.start.Z);
@@ -82,85 +86,38 @@ public class ModelCut {
 		return intersections;
 	}
 	
-	public List<Vertex> getPlanePoints(double X, double Y, double Z){
-		ArrayList<Vertex> points = new ArrayList<>();
-		//Z
-		double[][] params = new double[][]{
-				{X,Y},
-				{-X,Y},
-				{-X,-Y},
-				{X,-Y},
-		};
-		for (int i = 0; i < params.length && points.size() < 4; ++i){
-			Vertex v = getZCoordinate(params[i][0], params[i][1]);
-			if (v != null)
-				points.add(v);
-		}
-		//Y
-		params = new double[][]{
-				{X,Z},
-				{-X,Z},
-				{-X,-Z},
-				{X,-Z},
-		};
-		for (int i = 0; i < params.length && points.size() < 4; ++i){
-			Vertex v = getYCoordinate(params[i][0], params[i][1]);
-			if (v != null)
-				points.add(v);
-		}
-		//X
-		params = new double[][]{
-				{Y,Z},
-				{-Y,Z},
-				{-Y,-Z},
-				{Y,-Z},
-		};
-		for (int i = 0; i < params.length && points.size() < 4; ++i){
-			Vertex v = getXCoordinate(params[i][0], params[i][1]);
-			if (v != null)
-				points.add(v);
-		}
+	private static final Comparator<Object[]> atan2Comparator = new Comparator<Object[]>() {
 		
-		return points;
-	}
-	
-	private Vertex getXCoordinate(double y, double z){
-		double D = -(normal.X*offset.X + normal.Y*offset.Y + normal.Z*offset.Z);
-		double S = normal.Y*y + normal.Z*z + D;
-		if (Math.abs(normal.X) < Settings.DEFAULT_PRECISION){
-			if (Math.abs(S) < Settings.DEFAULT_PRECISION){
-				return new Vertex(0,y,z); //ANY
-			}
-			return null; //NONE
+		@Override
+		public int compare(Object[] o1, Object[] o2) {
+			double a1 = (double) o1[0];
+			double a2 = (double) o2[0];
+			return Double.compare(a1, a2);
 		}
-		double x = -S/normal.X;
-		return new Vertex(x,y,z);
-	}
+	};
 	
-	private Vertex getYCoordinate(double x, double z){
-		double D = -(normal.X*offset.X + normal.Y*offset.Y + normal.Z*offset.Z);
-		double S = normal.X*x + normal.Z*z + D;
-		if (Math.abs(normal.Y) < Settings.DEFAULT_PRECISION){
-			if (Math.abs(S) < Settings.DEFAULT_PRECISION){
-				return new Vertex(x,0,z); //ANY
-			}
-			return null; //NONE
+	private List<Vertex> orderVertexes(Collection<Vertex> vertexs){
+		ArrayList<Object[]> list = new ArrayList<>();
+		Vertex relCenter = new Vertex();
+		for (Vertex absVertex : vertexs){
+			Vertex relVertex = cutPlane.getRelativeCoordinates(absVertex);
+			relCenter.X += relVertex.X;
+			relCenter.Y += relVertex.Y;
+			list.add(new Object[]{0.0, absVertex, relVertex});
 		}
-		double y = -S/normal.Y;
-		return new Vertex(x,y,z);
-	}
-	
-	private Vertex getZCoordinate(double x, double y){
-		double D = -(normal.X*offset.X + normal.Y*offset.Y + normal.Z*offset.Z);
-		double S = normal.X*x + normal.Y*y + D;
-		if (Math.abs(normal.Z) < Settings.DEFAULT_PRECISION){
-			if (Math.abs(S) < Settings.DEFAULT_PRECISION){
-				return new Vertex(x,y,0); //ANY
-			}
-			return null; //NONE
+		relCenter.X = relCenter.X/vertexs.size();
+		relCenter.Y = relCenter.Y/vertexs.size();
+		for (Object[] o:list){
+			Vertex relVertex = (Vertex) o[2];
+			Double atan2 = Math.atan2(relVertex.Y - relCenter.Y, relVertex.X - relCenter.X);
+			o[0] = atan2;
+		}		
+		Collections.sort(list, atan2Comparator);
+		ArrayList<Vertex> result = new ArrayList<>();
+		for (Object[] o:list){
+			result.add((Vertex) o[1]);
 		}
-		double z = -S/normal.Z;
-		return new Vertex(x,y,z);
+		return result;
 	}
 	
 	

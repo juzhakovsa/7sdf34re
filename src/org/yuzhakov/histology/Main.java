@@ -20,7 +20,11 @@ import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.ModelCut;
 import org.yuzhakov.histology.model.cut.Segment;
 import org.yuzhakov.histology.model.cut.Tetrahedron;
+import org.yuzhakov.histology.model.samples.Gekko;
 import org.yuzhakov.histology.model.samples.Samples;
+
+import de.jreality.scene.SceneGraphComponent;
+import de.jreality.util.SceneGraphUtility;
 
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
@@ -28,9 +32,33 @@ public class Main {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-//            	MainFrame mainFrame = new MainFrame();
-//            	AxesFrame axesFrame = new AxesFrame();
-            	ModelTestFrame modelTestFrame = new ModelTestFrame();
+        		ArrayList<Double> heights = new ArrayList<>();
+        		for (int i = 0; i < 10; ++i){
+        			heights.add((double) i);
+        		}
+        		ArrayList<Double> heightsD = new ArrayList<>(heights);
+        		heightsD.remove(0);
+        		heightsD.remove(0);
+        		heightsD.remove(0);
+        		
+        		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
+        		
+        		Cell cellA = new Cell(Gekko.cellTypeA(), heights, 0, new Vertex(0,0,0));
+        		Cell cellB = new Cell(Gekko.cellTypeB(), heights, 0, new Vertex(Gekko.H,-Gekko.H,0));
+        		Cell cellC = new Cell(Gekko.cellTypeC(), heights, 0, new Vertex(0.5,-Gekko.H,0));
+        		Cell cellD = new Cell(Gekko.cellTypeD(), heightsD, 0, new Vertex(Gekko.H,0,0));
+        		
+        		JrCell jrCellA = new JrCell(cellA);
+        		JrCell jrCellB = new JrCell(cellB);
+        		JrCell jrCellC = new JrCell(cellC);
+				JrCell jrCellD = new JrCell(cellD);
+				
+				world.addChild(jrCellA.getSceneGraphComponent());
+				world.addChild(jrCellB.getSceneGraphComponent());
+				world.addChild(jrCellC.getSceneGraphComponent());
+				world.addChild(jrCellD.getSceneGraphComponent());
+				
+            	ModelTestFrame modelTestFrame = new ModelTestFrame(world);
 			}
         });
 	}

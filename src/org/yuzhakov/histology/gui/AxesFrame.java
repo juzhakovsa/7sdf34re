@@ -20,6 +20,7 @@ import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.cut.CutPlane;
 import org.yuzhakov.histology.model.cut.ModelCut;
 import org.yuzhakov.histology.model.samples.Axes;
 import org.yuzhakov.histology.model.samples.Samples;
@@ -38,14 +39,21 @@ public class AxesFrame extends JFrame{
 	public AxesFrame() {
 		super("Histology 3D");
 		
-		final ModelCut modelCut = new ModelCut();
-		final JrCutPlane cutPlane = new JrCutPlane(modelCut);
+		final CutPlane cutPlane = new CutPlane();
+		cutPlane.setA(Math.PI / 4);
+		cutPlane.setB(Math.PI / 4);
+		cutPlane.setZ(0.5);
+		cutPlane.construct();
 		
-		final Axes axes = new Axes();
-		axes.update();
+		final JrCutPlane jrCutPlane = new JrCutPlane(cutPlane);
+		
+//		final Axes axes = new Axes();
+//		axes.setA(Math.PI / 4);
+//		axes.setB(Math.PI / 4);
+//		axes.update();
 		SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
-		world.addChild(axes.getSceneGraphComponent());
-		world.addChild(cutPlane.getSceneGraphComponent());
+//		world.addChild(axes.getSceneGraphComponent());
+		world.addChild(jrCutPlane.getSceneGraphComponent());
 		
 		setJMenuBar(new MainMenuBar());
 		
@@ -53,48 +61,48 @@ public class AxesFrame extends JFrame{
 		mainPanel.add(new JRealityComponent(world), BorderLayout.CENTER);
 		mainPanel.add(getSliderPanel(), BorderLayout.EAST);
 		
-		sliderA.addChangeListener(new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent event) {
-				JSlider slider = (JSlider) event.getSource();
-				if (slider.getValueIsAdjusting())
-					return;
-				double A = (double)sliderA.getValue() * Math.PI / 90;
-				axes.setA(A);
-				Vertex v = axes.update();
-				modelCut.setNormal(v);
-				cutPlane.update();
-			}
-		});
-		
-		sliderB.addChangeListener(new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent event) {
-				JSlider slider = (JSlider) event.getSource();
-				if (slider.getValueIsAdjusting())
-					return;
-				double B = (double)sliderB.getValue() * Math.PI / 90;
-				axes.setB(B);
-				Vertex v = axes.update();
-				modelCut.setNormal(v);
-				cutPlane.update();
-			}
-		});
-		
-		sliderZ.addChangeListener(new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent event) {
-				JSlider slider = (JSlider) event.getSource();
-				if (slider.getValueIsAdjusting())
-					return;
-				double Z = (double)slider.getValue() * 2 / 100;
-				modelCut.setOffset(new Vertex(0,0,Z));
-				cutPlane.update();
-			}
-		});
+//		sliderA.addChangeListener(new ChangeListener() {
+//			
+//			@Override
+//			public void stateChanged(ChangeEvent event) {
+//				JSlider slider = (JSlider) event.getSource();
+//				if (slider.getValueIsAdjusting())
+//					return;
+//				double A = (double)sliderA.getValue() * Math.PI / 90;
+//				axes.setA(A);
+//				Vertex v = axes.update();
+//				modelCut.setNormal(v);
+//				jrCutPlane.update();
+//			}
+//		});
+//		
+//		sliderB.addChangeListener(new ChangeListener() {
+//			
+//			@Override
+//			public void stateChanged(ChangeEvent event) {
+//				JSlider slider = (JSlider) event.getSource();
+//				if (slider.getValueIsAdjusting())
+//					return;
+//				double B = (double)sliderB.getValue() * Math.PI / 90;
+//				axes.setB(B);
+//				Vertex v = axes.update();
+//				modelCut.setNormal(v);
+//				jrCutPlane.update();
+//			}
+//		});
+//		
+//		sliderZ.addChangeListener(new ChangeListener() {
+//			
+//			@Override
+//			public void stateChanged(ChangeEvent event) {
+//				JSlider slider = (JSlider) event.getSource();
+//				if (slider.getValueIsAdjusting())
+//					return;
+//				double Z = (double)slider.getValue() * 2 / 100;
+//				modelCut.setOffset(new Vertex(0,0,Z));
+//				jrCutPlane.update();
+//			}
+//		});
 
 		
 		add(mainPanel);

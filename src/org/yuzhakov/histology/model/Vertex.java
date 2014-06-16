@@ -11,6 +11,13 @@ public class Vertex {
 	public Vertex(){
 		super();
 	}
+	
+	public Vertex(double[] coordinates){
+		super();
+		X = coordinates[0];
+		Y = coordinates[1];
+		Z = coordinates[2];
+	}
 
 	public Vertex(double x, double y, double z) {
 		super();
@@ -101,7 +108,7 @@ public class Vertex {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "["+X+", "+Y+", "+Z+"]";

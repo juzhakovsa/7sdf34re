@@ -39,36 +39,34 @@ public class ModelTestFrame extends JFrame{
 	
 	private JButton plus;
 	private JButton minus;
-	private double pos = 0;
 	
 	
-	public ModelTestFrame() {
+	public ModelTestFrame(SceneGraphComponent sceneGraphComponent) {
 		super("Histology 3D");
 		
-		ArrayList<Double> heights = new ArrayList<>();
-    	heights.add(0.0);
-    	heights.add(2.0);
-		
-		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
-		for (int i = 0; i < 10; ++i){
-			for (int j = 0; j < 10; ++j){
-				double X = -10 + 2*i;
-				double Y = -10 + 2*j;
-				Cell cell = new Cell(Samples.Star4(1), heights, 0, new Vertex(X,Y,0));
-				JrCell jrCell = new JrCell(cell);
-				world.addChild(jrCell.getSceneGraphComponent());
-			}
-		}
+//		ArrayList<Double> heights = new ArrayList<>();
+//    	heights.add(0.0);
+//    	heights.add(2.0);
+//		
+//		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
+//		for (int i = 0; i < 10; ++i){
+//			for (int j = 0; j < 10; ++j){
+//				double X = -10 + 2*i;
+//				double Y = -10 + 2*j;
+//				Cell cell = new Cell(Samples.Star4(1), heights, 0, new Vertex(X,Y,0));
+//				JrCell jrCell = new JrCell(cell);
+//				world.addChild(jrCell.getSceneGraphComponent());
+//			}
+//		}
 		
 		setJMenuBar(new MainMenuBar());
 		
-		JRealityComponent jRealityComponent = new JRealityComponent(world);
+		JRealityComponent jRealityComponent = new JRealityComponent(sceneGraphComponent);
 		final SceneGraphComponent cameraNode = CameraUtility.getCameraNode(jRealityComponent.getJRViewer().getViewer());
 		
 		
 		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.add(jRealityComponent, BorderLayout.CENTER);
-//		mainPanel.add(getButtonsPanel(), BorderLayout.NORTH);
 		mainPanel.add(getToolBar(), BorderLayout.NORTH);
 		
 		minus.addActionListener(new ActionListener() {
@@ -93,19 +91,6 @@ public class ModelTestFrame extends JFrame{
     	validate();
     	pack();
     	setVisible(true);
-	}
-	
-	private JPanel getButtonsPanel(){
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		plus = SwingUtils.makeNavigationButton("ZoomIn24", "ZOOM_IN", "Увеличить");
-		panel.add(plus);
-		minus = SwingUtils.makeNavigationButton("ZoomOut24", "ZOOM_OUT", "Уменьшить");
-		panel.add(minus);
-		
-		
-		
-		return panel;
 	}
 	
 	private JToolBar getToolBar(){
