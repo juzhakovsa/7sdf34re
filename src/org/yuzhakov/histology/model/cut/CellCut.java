@@ -9,14 +9,18 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.yuzhakov.histology.Settings;
+import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.Vertex;
 
-public class ModelCut {
+public class CellCut {
 	private CutPlane cutPlane;
 	private List<Tetrahedron> tetrahedrons;
+	private Cell cell;
 	
-	public ModelCut(CutPlane cutPlane){
+	public CellCut(CutPlane cutPlane, Cell cell, List<Tetrahedron> tetrahedrons){
 		this.cutPlane = cutPlane;
+		this.cell = cell;
+		this.tetrahedrons = tetrahedrons;
 	}
 		
 	public CutPlane getCutPlane() {
@@ -32,6 +36,10 @@ public class ModelCut {
 		this.tetrahedrons = tetrahedrons;
 	}
 	
+	public Cell getCell() {
+		return cell;
+	}
+
 	public List<Vertex[]> getCut(){
 		ArrayList<Vertex[]> cuts = new ArrayList<>();
 		for (Tetrahedron tetrahedron : tetrahedrons){

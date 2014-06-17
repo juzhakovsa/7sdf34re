@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.CutPlane;
-import org.yuzhakov.histology.model.cut.ModelCut;
+import org.yuzhakov.histology.model.cut.CellCut;
 
 import de.jreality.geometry.IndexedFaceSetFactory;
 import de.jreality.scene.Appearance;
@@ -18,12 +18,19 @@ import de.jreality.util.SceneGraphUtility;
 public class JrCutPlane {
 	private CutPlane cutPlane;
 	private SceneGraphComponent sceneGraphComponent;
+	double sizeX = 10, sizeY = 10, sizeZ = 10;
 
 	public JrCutPlane(CutPlane cutPlane) {
 		this.cutPlane = cutPlane;
 		sceneGraphComponent = SceneGraphUtility.createFullSceneGraphComponent();
 		update();
 		setAppearance(sceneGraphComponent.getAppearance());
+	}
+	
+	public void setPlaneSize(double X, double Y, double Z){
+		sizeX = X;
+		sizeY = Y;
+		sizeZ = Z;
 	}
 
 	public CutPlane getCutPlane() {
@@ -35,7 +42,7 @@ public class JrCutPlane {
 	}
 	
 	public void update(){
-		List<Vertex> points = cutPlane.getPlanePoints(10, 10, 10);
+		List<Vertex> points = cutPlane.getPlanePoints(sizeX, sizeY, sizeZ);
 		double[][] coordinates = new double[points.size()][];
 		for (int i = 0; i < coordinates.length; ++i){
 			coordinates[i] = points.get(i).getCoordinates();

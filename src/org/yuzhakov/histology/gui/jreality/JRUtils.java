@@ -10,6 +10,8 @@ import de.jreality.scene.IndexedFaceSet;
 
 public class JRUtils {
 	public static IndexedFaceSet getIndexedFaceSet(List<Vertex[]> c){
+		if (c.size() == 0)
+			return null;
 		ArrayList<double[]> vertexes = new ArrayList<>();
 		ArrayList<int[]> indices = new ArrayList<>();
 

@@ -25,7 +25,7 @@ import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
-import org.yuzhakov.histology.model.cut.ModelCut;
+import org.yuzhakov.histology.model.cut.CellCut;
 import org.yuzhakov.histology.model.samples.Samples;
 
 import de.jreality.math.MatrixBuilder;
@@ -34,40 +34,30 @@ import de.jreality.tutorial.scene.CameraPathExample;
 import de.jreality.util.CameraUtility;
 import de.jreality.util.SceneGraphUtility;
 
-public class ModelTestFrame extends JFrame{
+public class ModelFrame extends JFrame{
 	private JPanel mainPanel;
 	
 	private JButton plus;
 	private JButton minus;
 	
+	private JSlider sliderA;
+	private JSlider sliderB;
+	private JSlider sliderZ;	
 	
-	public ModelTestFrame(SceneGraphComponent sceneGraphComponent) {
-		super("Histology 3D");
-		
-//		ArrayList<Double> heights = new ArrayList<>();
-//    	heights.add(0.0);
-//    	heights.add(2.0);
-//		
-//		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
-//		for (int i = 0; i < 10; ++i){
-//			for (int j = 0; j < 10; ++j){
-//				double X = -10 + 2*i;
-//				double Y = -10 + 2*j;
-//				Cell cell = new Cell(Samples.Star4(1), heights, 0, new Vertex(X,Y,0));
-//				JrCell jrCell = new JrCell(cell);
-//				world.addChild(jrCell.getSceneGraphComponent());
-//			}
-//		}
+	public ModelFrame(SceneGraphComponent sceneGraphComponent, String modelName) {
+		super(modelName);
 		
 		setJMenuBar(new MainMenuBar());
 		
 		JRealityComponent jRealityComponent = new JRealityComponent(sceneGraphComponent);
 		final SceneGraphComponent cameraNode = CameraUtility.getCameraNode(jRealityComponent.getJRViewer().getViewer());
+		MatrixBuilder.euclidean(cameraNode).translate(0,0,10).assignTo(cameraNode);
 		
 		
 		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.add(jRealityComponent, BorderLayout.CENTER);
 		mainPanel.add(getToolBar(), BorderLayout.NORTH);
+		mainPanel.add(getSliderPanel(), BorderLayout.EAST);
 		
 		minus.addActionListener(new ActionListener() {
 			
@@ -85,12 +75,34 @@ public class ModelTestFrame extends JFrame{
 			}
 		});
 		
+		final ChangeListener slidersListener = new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent event) {
+				JSlider slider = (JSlider) event.getSource();
+				if (slider.getValueIsAdjusting())
+					return;
+				double A = (double) sliderA.getValue() * Math.PI / 180;
+				double B = (double) sliderB.getValue() * Math.PI / 180;
+				double Z = (double) sliderZ.getValue() / 100;
+				sliderStateChanged(A, B, Z);
+			}
+		};
+
+		sliderA.addChangeListener(slidersListener);
+		sliderB.addChangeListener(slidersListener);
+		sliderZ.addChangeListener(slidersListener);
+		
 		add(mainPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	setExtendedState(Frame.MAXIMIZED_BOTH);
     	validate();
     	pack();
     	setVisible(true);
+	}
+	
+	public void sliderStateChanged(double A, double B, double Z){
+		
 	}
 	
 	private JToolBar getToolBar(){
@@ -100,10 +112,24 @@ public class ModelTestFrame extends JFrame{
 		plus = SwingUtils.makeNavigationButton("ZoomIn24", "ZOOM_IN", "Увеличить");
 		toolBar.add(plus);
 		minus = SwingUtils.makeNavigationButton("ZoomOut24", "ZOOM_OUT", "Уменьшить");
-		toolBar.add(minus);
-		
-		
+		toolBar.add(minus);		
 		
 		return toolBar;
+	}
+	
+	private JPanel getSliderPanel(){
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		sliderA = new JSlider(-90, 90, 0);
+		sliderA.setName("Parameter A");
+		panel.add(sliderA);
+		sliderB = new JSlider(-90, 90, 0);
+		sliderB.setName("Parameter B");
+		panel.add(sliderB);
+		sliderZ = new JSlider(0, 100, 0);
+		sliderZ.setName("Parameter Z");
+		panel.add(sliderZ);
+		
+		return panel;
 	}
 }

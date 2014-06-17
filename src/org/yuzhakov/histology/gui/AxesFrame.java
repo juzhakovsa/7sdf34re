@@ -21,7 +21,7 @@ import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.CutPlane;
-import org.yuzhakov.histology.model.cut.ModelCut;
+import org.yuzhakov.histology.model.cut.CellCut;
 import org.yuzhakov.histology.model.samples.Axes;
 import org.yuzhakov.histology.model.samples.Samples;
 

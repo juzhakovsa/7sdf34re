@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.omg.CosNaming.IstringHelper;
+import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.Tetrahedron;
@@ -26,6 +27,50 @@ public class Tetgen {
 	static {
 		System.load(
 				new File("lib/JavaTetgen.dll").getAbsolutePath());
+	}
+	
+	public Tetgen(Cell cell){
+		CellPrototype cellPrototype = cell.getPrototype();
+		color = cellPrototype.getColor();
+		//vertexes
+		numberOfVertexes = cellPrototype.getNumberOfVertexes();
+		vertexes = new double[numberOfVertexes*3];
+		int i = 0;
+		int j = 0;
+		int layer = 0;
+		for (Vertex[] topologyCoordinates : cell.getTopologiesVertices()){
+			for (Vertex v:topologyCoordinates){
+				vertexes[i] = v.X;
+				vertexes[i+1] = v.Y;
+				vertexes[i+2] = v.Z;
+				i+=3;
+			}
+			++layer;
+		}
+		
+		//faces
+		int[][] nodeFaces = cellPrototype.getFaceIndices().toArray(new int[0][0]);
+		numberOfFaces = nodeFaces.length;
+		facesSizes = new int[numberOfFaces];
+		int sum = 0;
+		i = 0;
+		for (; i < numberOfFaces; ++i){
+			int s = nodeFaces[i].length;
+			facesSizes[i] = s;
+			sum += s;
+		}
+		faces = new int[sum];
+		i = 0;
+		j = 0;
+		for (; i < numberOfFaces; ++i){
+			int[] f = nodeFaces[i];
+			for (int k = 0; k < f.length; ++k){
+				faces[j] = f[k];
+				++j;
+			}
+		}
+		
+		
 	}
 	
 	public Tetgen(CellPrototype cellPrototype){
