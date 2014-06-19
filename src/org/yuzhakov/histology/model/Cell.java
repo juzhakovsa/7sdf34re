@@ -1,6 +1,6 @@
 package org.yuzhakov.histology.model;
 
-import java.awt.Color;
+import de.jreality.shader.Color;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,10 +1,11 @@
 package org.yuzhakov.histology.model;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.Util;
+
+import de.jreality.shader.Color;
 
 public class CellPrototype {
 	private List<Topology> topologies = new ArrayList<>();

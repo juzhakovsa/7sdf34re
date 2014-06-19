@@ -1,13 +1,87 @@
 package org.yuzhakov.histology.model.samples;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Topology;
 import org.yuzhakov.histology.model.Vertex;
+
+import de.jreality.scene.SceneGraphComponent;
+import de.jreality.shader.Color;
+import de.jreality.util.SceneGraphUtility;
 
 public class Gekko {
 	public static final double L = 2.414;
 	public static final double D = L - 1;
 	public static final double H = 0.5 + D;
+	public static final double GISTEON_WIDTH = H*2;
+	public static final double GISTEON_HEIGHT = H*4;
+	
+	private static final ArrayList<Double> heights;
+	private static final ArrayList<Double> heightsD; 
+	
+	public static List<Cell> getModel(int sizeX, int sizeY){
+		ArrayList<Cell> model = new ArrayList<>();
+		int startX = -sizeX/2;
+		int startY = -sizeY/2;
+		for (int i = 0; i < sizeX; ++i){
+			for (int j = 0; j < sizeY; ++j){
+				double X = (startX + i)*GISTEON_WIDTH;
+				double Y = (startY + j)*GISTEON_HEIGHT;
+				model.addAll(getGisteon(new Vertex(X,Y,0)));
+			}
+		}
+		return model;
+	}
+	
+	public static List<Cell> getGisteon(Vertex offset){
+		
+		CellPrototype typeA = Gekko.cellTypeA();
+		typeA.setColor(new Color(204,51,51));
+		
+		CellPrototype typeB = Gekko.cellTypeB();
+		typeB.setColor(new Color(204,102,0));
+		
+		CellPrototype typeC1 = Gekko.cellTypeC();
+		typeC1.setColor(new Color(0,104,255));
+		
+		CellPrototype typeC2 = Gekko.cellTypeC();
+		typeC2.setColor(new Color(0,255,104));
+		
+		CellPrototype typeD1 = Gekko.cellTypeD();
+		typeD1.setColor(new Color(204,0,0));
+		
+		CellPrototype typeD2 = Gekko.cellTypeD();
+		typeD2.setColor(new Color(255,102,204));
+		
+		
+		Cell cellA1 = new Cell(typeA, heights, 0, Vertex.getSumm(offset, new Vertex(0,0,0)));
+		Cell cellA2 = new Cell(typeA, heights, 0, Vertex.getSumm(offset, new Vertex(0,Gekko.H*2,0)));
+		Cell cellB1 = new Cell(typeB, heights, 0, Vertex.getSumm(offset, new Vertex(Gekko.H,Gekko.H,0)));
+		Cell cellB2 = new Cell(typeB, heights, 0, Vertex.getSumm(offset, new Vertex(Gekko.H,-Gekko.H,0)));
+		Cell cellC1 = new Cell(typeC1, heights, 0, Vertex.getSumm(offset, new Vertex(0.5,-Gekko.H,0)));
+		Cell cellC2 = new Cell(typeC2, heights, 180, Vertex.getSumm(offset, new Vertex(Gekko.H+Gekko.D,-Gekko.H,0)));
+		Cell cellC3 = new Cell(typeC2, heights, 0, Vertex.getSumm(offset, new Vertex(0.5,Gekko.H,0)));
+		Cell cellC4 = new Cell(typeC1, heights, 180, Vertex.getSumm(offset, new Vertex(Gekko.H+Gekko.D,Gekko.H,0)));
+		Cell cellD1 = new Cell(typeD1, heightsD, 0, Vertex.getSumm(offset, new Vertex(Gekko.H,0,0)));
+		Cell cellD2 = new Cell(typeD2, heightsD, 0, Vertex.getSumm(offset, new Vertex(Gekko.H,Gekko.H*2,0)));
+
+		
+		ArrayList<Cell> cells = new ArrayList<>();
+		cells.add(cellA1);
+		cells.add(cellA2);
+		cells.add(cellB1);
+		cells.add(cellB2);
+		cells.add(cellC1);
+		cells.add(cellC2);
+		cells.add(cellC3);
+		cells.add(cellC4);
+		cells.add(cellD1);
+		cells.add(cellD2);
+		return cells;
+	}
 	
 	public static CellPrototype cellTypeA(){		
 		Topology topology0 = new Topology(new Vertex[] {
@@ -568,6 +642,17 @@ public class Gekko {
 //		cellD.getMappings().add(mapping3);
 		
 		return cellD;
+	}
+	
+	static{
+		heights = new ArrayList<>();
+		for (int i = 0; i < 10; ++i){
+			heights.add((double) i);
+		}
+		heightsD = new ArrayList<>(heights);
+		heightsD.remove(0);
+		heightsD.remove(0);
+		heightsD.remove(0);
 	}
 	
 	private static int[][] getDefaultMapping(int size){

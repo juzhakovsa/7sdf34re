@@ -2,7 +2,6 @@ package org.yuzhakov.histology.gui.jreality;
 
 import static de.jreality.shader.CommonAttributes.*;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import de.jreality.geometry.IndexedFaceSetFactory;
 import de.jreality.scene.Appearance;
 import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.shader.Color;
 import de.jreality.util.SceneGraphUtility;
 
 public class JrCell {

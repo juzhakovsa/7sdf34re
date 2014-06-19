@@ -4,35 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.miginfocom.swing.MigLayout;
-
-import org.yuzhakov.histology.Tetgen;
-import org.yuzhakov.histology.gui.jreality.JRUtils;
-import org.yuzhakov.histology.gui.jreality.JrCell;
-import org.yuzhakov.histology.gui.jreality.JrCutPlane;
-import org.yuzhakov.histology.model.Cell;
-import org.yuzhakov.histology.model.CellPrototype;
-import org.yuzhakov.histology.model.Vertex;
-import org.yuzhakov.histology.model.cut.CellCut;
-import org.yuzhakov.histology.model.samples.Samples;
-
 import de.jreality.math.MatrixBuilder;
 import de.jreality.scene.SceneGraphComponent;
-import de.jreality.tutorial.scene.CameraPathExample;
 import de.jreality.util.CameraUtility;
-import de.jreality.util.SceneGraphUtility;
 
 public class ModelFrame extends JFrame{
 	private JPanel mainPanel;

@@ -1,9 +1,10 @@
 package org.yuzhakov.histology.model.cut;
 
-import java.awt.Color;
 
 import org.yuzhakov.histology.Util;
 import org.yuzhakov.histology.model.Vertex;
+
+import de.jreality.shader.Color;
 
 public class Tetrahedron {
 	private Vertex[] corners;

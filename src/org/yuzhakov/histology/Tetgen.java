@@ -1,6 +1,5 @@
 package org.yuzhakov.histology;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +9,8 @@ import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.Tetrahedron;
+
+import de.jreality.shader.Color;
 
 public class Tetgen {
 	private double[] vertexes;

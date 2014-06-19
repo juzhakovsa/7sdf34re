@@ -1,7 +1,5 @@
 package org.yuzhakov.histology.model.samples;
 
-import java.awt.Color;
-
 import org.la4j.matrix.Matrix;
 import org.la4j.matrix.dense.Basic2DMatrix;
 import org.la4j.vector.dense.BasicVector;
@@ -10,6 +8,7 @@ import org.yuzhakov.histology.model.Vertex;
 import de.jreality.geometry.IndexedLineSetFactory;
 import de.jreality.scene.IndexedLineSet;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.shader.Color;
 import de.jreality.util.SceneGraphUtility;
 
 public class Axes {
@@ -103,7 +102,6 @@ public class Axes {
 	    		Color.GREEN,
 	    		Color.BLACK
 	    });
-	    
 	    ilsf.update();
 		
 		return ilsf.getIndexedLineSet();

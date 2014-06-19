@@ -1,6 +1,9 @@
 package org.yuzhakov.histology;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.yuzhakov.histology.gui.ModelFrame;
 import org.yuzhakov.histology.gui.ResultFrame;
 import org.yuzhakov.histology.gui.jreality.JrCell;
@@ -12,6 +15,7 @@ import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.CutPlane;
 import org.yuzhakov.histology.model.cut.ModelCut;
 import org.yuzhakov.histology.model.samples.Gekko;
+
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.util.SceneGraphUtility;
 
@@ -20,49 +24,17 @@ public class Main {
 		 //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-        		ArrayList<Double> heights = new ArrayList<>();
-        		for (int i = 0; i < 10; ++i){
-        			heights.add((double) i);
-        		}
-        		ArrayList<Double> heightsD = new ArrayList<>(heights);
-        		heightsD.remove(0);
-        		heightsD.remove(0);
-        		heightsD.remove(0);
-        		
+            public void run() {        		
         		final double height = 6;
         		
         		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
-        		
-        		CellPrototype typeA = Gekko.cellTypeA();
-        		
-        		Cell cellA1 = new Cell(Gekko.cellTypeA(), heights, 0, new Vertex(0,0,0));
-        		Cell cellA2 = new Cell(Gekko.cellTypeA(), heights, 0, new Vertex(0,Gekko.H*2,0));
-        		Cell cellB1 = new Cell(Gekko.cellTypeB(), heights, 0, new Vertex(Gekko.H,Gekko.H,0));
-        		Cell cellB2 = new Cell(Gekko.cellTypeB(), heights, 0, new Vertex(Gekko.H,-Gekko.H,0));
-        		Cell cellC1 = new Cell(Gekko.cellTypeC(), heights, 0, new Vertex(0.5,-Gekko.H,0));
-        		Cell cellC2 = new Cell(Gekko.cellTypeC(), heights, 180, new Vertex(Gekko.H+Gekko.D,-Gekko.H,0));
-        		Cell cellC3 = new Cell(Gekko.cellTypeC(), heights, 0, new Vertex(0.5,Gekko.H,0));
-        		Cell cellC4 = new Cell(Gekko.cellTypeC(), heights, 180, new Vertex(Gekko.H+Gekko.D,Gekko.H,0));
-        		Cell cellD1 = new Cell(Gekko.cellTypeD(), heightsD, 0, new Vertex(Gekko.H,0,0));
-        		Cell cellD2 = new Cell(Gekko.cellTypeD(), heightsD, 0, new Vertex(Gekko.H,Gekko.H*2,0));
-        		
-//        		JrCell jrCellA = new JrCell(cellA);
-//        		JrCell jrCellB = new JrCell(cellB1);
-//        		JrCell jrCellC = new JrCell(cellC);
-//				JrCell jrCellD = new JrCell(cellD);
+        		     		
+				List<Cell> cells = Gekko.getModel(3, 3);
 				
-				ArrayList<Cell> cells = new ArrayList<>();
-				cells.add(cellA1);
-				cells.add(cellA2);
-				cells.add(cellB1);
-				cells.add(cellB2);
-				cells.add(cellC1);
-				cells.add(cellC2);
-				cells.add(cellC3);
-				cells.add(cellC4);
-				cells.add(cellD1);
-				cells.add(cellD2);
+//				List<Cell> gisteon = Gekko.getGisteon(new Vertex());
+				
+//				List<Cell> cells = gisteon;
+//				cells.add(gisteon.get(2));
 				
 				for (Cell cell : cells){
 					JrCell jrCell = new JrCell(cell);
@@ -72,14 +44,12 @@ public class Main {
 				final CutPlane cutPlane = new CutPlane();
 				cutPlane.construct();
 				final JrCutPlane JRcutPlane = new JrCutPlane(cutPlane);
+				JRcutPlane.setPlaneSize(40, 40, 20);
+				JRcutPlane.update();
 				
 				final ModelCut modelCut = new ModelCut(cells, cutPlane);
 				final JrModelCut jrModelCut = new JrModelCut(modelCut);
 				
-//				world.addChild(jrCellA.getSceneGraphComponent());
-//				world.addChild(jrCellB.getSceneGraphComponent());
-//				world.addChild(jrCellC.getSceneGraphComponent());
-//				world.addChild(jrCellD.getSceneGraphComponent());
 				
 				world.addChild(JRcutPlane.getSceneGraphComponent());
 

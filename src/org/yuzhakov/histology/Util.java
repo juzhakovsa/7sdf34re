@@ -1,9 +1,10 @@
 package org.yuzhakov.histology;
 
-import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
+
+import de.jreality.shader.Color;
 
 public class Util {
 	private static final Random RANDOM = new Random();
