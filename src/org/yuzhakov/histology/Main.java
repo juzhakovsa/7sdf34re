@@ -1,16 +1,16 @@
 package org.yuzhakov.histology;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.yuzhakov.histology.gui.ModelFrame;
-import org.yuzhakov.histology.gui.ResultFrame;
+import javax.swing.JFrame;
+
+import org.yuzhakov.histology.gui.cell.CellFrame;
+import org.yuzhakov.histology.gui.histion.HistionFrame;
 import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.gui.jreality.JrModelCut;
+import org.yuzhakov.histology.gui.model.ModelFrame;
 import org.yuzhakov.histology.model.Cell;
-import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.CutPlane;
 import org.yuzhakov.histology.model.cut.ModelCut;
@@ -29,14 +29,14 @@ public class Main {
         		
         		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
         		     		
-				List<Cell> cells = Gekko.getModel(3, 3);
+//				List<Cell> cells = Gekko.getModel(3, 3);
 				
-//				List<Cell> gisteon = Gekko.getGisteon(new Vertex());
+				List<Cell> gistion = Gekko.getGisteon(new Vertex());
 				
 //				List<Cell> cells = gisteon;
 //				cells.add(gisteon.get(2));
 				
-				for (Cell cell : cells){
+				for (Cell cell : gistion){
 					JrCell jrCell = new JrCell(cell);
 					world.addChild(jrCell.getSceneGraphComponent());
 				}
@@ -47,24 +47,31 @@ public class Main {
 				JRcutPlane.setPlaneSize(40, 40, 20);
 				JRcutPlane.update();
 				
-				final ModelCut modelCut = new ModelCut(cells, cutPlane);
+				final ModelCut modelCut = new ModelCut(gistion, cutPlane);
 				final JrModelCut jrModelCut = new JrModelCut(modelCut);
 				
 				
-				world.addChild(JRcutPlane.getSceneGraphComponent());
+//				world.addChild(JRcutPlane.getSceneGraphComponent());
 
-            	ModelFrame modelTestFrame = new ModelFrame(world, "Модель Геккона"){
-            		@Override
-            		public void sliderStateChanged(double A, double B, double Z) {
-            			cutPlane.setA(A);
-            			cutPlane.setB(B);
-            			cutPlane.setZ(Z*height);
-            			cutPlane.construct();
-            			JRcutPlane.update();
-            			jrModelCut.update();
-            		}
-            	};
-            	ResultFrame cutResultFrame = new ResultFrame(jrModelCut.getSceneGraphComponent(), "Сечение 1");
+//            	ModelFrame modelTestFrame = new ModelFrame(world, "Модель Геккона"){
+//            		@Override
+//            		public void sliderStateChanged(double A, double B, double Z) {
+//            			cutPlane.setA(A);
+//            			cutPlane.setB(B);
+//            			cutPlane.setZ(Z*height);
+//            			cutPlane.construct();
+//            			JRcutPlane.update();
+//            			jrModelCut.update();
+//            		}
+//            	};
+//            	ResultFrame cutResultFrame = new ResultFrame(jrModelCut.getSceneGraphComponent(), "Сечение 1");
+				JrCell jrCell = new JrCell(gistion.get(0));
+				CellFrame cellFrame = new CellFrame(Gekko.cellTypeA(), jrCell.getSceneGraphComponent(), "Тип А");
+				cellFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//				HistionFrame histionFrame = new HistionFrame(Gekko.getGisteon(new Vertex()), world, "Гистион сетчатки геккона");
+//				histionFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//				ModelFrame modelFrame = new ModelFrame(Gekko.getGisteon(new Vertex()), world, "Cетчатка геккона");
+//				modelFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
         });
 	}
