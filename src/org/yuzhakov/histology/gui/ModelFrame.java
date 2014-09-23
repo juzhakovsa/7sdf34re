@@ -20,9 +20,6 @@ import de.jreality.util.CameraUtility;
 public class ModelFrame extends JFrame{
 	private JPanel mainPanel;
 	
-	private JButton plus;
-	private JButton minus;
-	
 	private JSlider sliderA;
 	private JSlider sliderB;
 	private JSlider sliderZ;	
@@ -39,24 +36,8 @@ public class ModelFrame extends JFrame{
 		
 		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.add(jRealityComponent, BorderLayout.CENTER);
-		mainPanel.add(getToolBar(), BorderLayout.NORTH);
 		mainPanel.add(getSliderPanel(), BorderLayout.EAST);
 		
-		minus.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				MatrixBuilder.euclidean(cameraNode).translate(0,0,1).assignTo(cameraNode);
-			}
-		});
-		
-		plus.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				MatrixBuilder.euclidean(cameraNode).translate(0,0,-1).assignTo(cameraNode);
-			}
-		});
 		
 		final ChangeListener slidersListener = new ChangeListener() {
 
@@ -86,18 +67,6 @@ public class ModelFrame extends JFrame{
 	
 	public void sliderStateChanged(double A, double B, double Z){
 		
-	}
-	
-	private JToolBar getToolBar(){
-		JToolBar toolBar = new JToolBar();
-		toolBar.setRollover(true);
-		toolBar.setFloatable(false);
-		plus = SwingUtils.makeNavigationButton("ZoomIn24", "ZOOM_IN", "Увеличить");
-		toolBar.add(plus);
-		minus = SwingUtils.makeNavigationButton("ZoomOut24", "ZOOM_OUT", "Уменьшить");
-		toolBar.add(minus);		
-		
-		return toolBar;
 	}
 	
 	private JPanel getSliderPanel(){
