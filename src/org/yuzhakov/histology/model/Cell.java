@@ -10,6 +10,17 @@ public class Cell {
 	private Vertex offset;
 	private double angle;
 	
+	public Cell(CellPrototype prototype) {
+		this.prototype = prototype;
+		this.offset = new Vertex();
+		this.angle = 0;
+		this.heights = new ArrayList<>();
+		int size = prototype.getTopologies().size();
+		for (int i = 0; i < size; ++i){
+			this.heights.add( (double) i );
+		}
+	}
+	
 	public Cell(CellPrototype prototype, List<Double> heights, double angle, Vertex offset) {
 		this.prototype = prototype;
 		this.heights = new ArrayList<>(heights);

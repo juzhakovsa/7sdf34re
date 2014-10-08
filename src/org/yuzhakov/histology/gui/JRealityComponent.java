@@ -11,8 +11,11 @@ import javax.swing.JToolBar;
 
 import de.jreality.math.MatrixBuilder;
 import de.jreality.plugin.JRViewer;
+import de.jreality.scene.Appearance;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
+import de.jreality.shader.Color;
+import de.jreality.shader.CommonAttributes;
 import de.jreality.util.CameraUtility;
 
 public class JRealityComponent extends JPanel{
@@ -26,8 +29,7 @@ public class JRealityComponent extends JPanel{
 	
 	public JRealityComponent(SceneGraphComponent component) {
 		super(new BorderLayout());
-		
-		
+			
 		viewer = JRViewer.createJRViewer(component);
 		viewer.startupLocal();
 		Viewer v = viewer.getViewer();
@@ -37,6 +39,9 @@ public class JRealityComponent extends JPanel{
 		this.add(createToolBar(), BorderLayout.NORTH);
 		initToolBarListeners();
 		this.setVisible(true);
+		
+		Appearance appearance = viewer.getViewer().getSceneRoot().getAppearance();
+		appearance.setAttribute(CommonAttributes.BACKGROUND_COLOR, Color.WHITE);
 		
 	}
 	

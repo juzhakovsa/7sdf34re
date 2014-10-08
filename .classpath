@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/jogl-all-natives-windows-amd64.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gluegen-rt-natives-windows-amd64.jar"/>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Histology/jni"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="jni"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry exported="true" kind="lib" path="lib/miglayout-4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/la4j-0.4.9/bin/la4j-0.4.9.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry exported="true" kind="lib" path="lib/beans.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/bsh.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/colorpicker.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gluegen-rt.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jogl-all.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jReality.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jrworkspace.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jterm.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/vrData.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xpp3-1.1.4c.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xstream-1.4.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/poly2tri.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

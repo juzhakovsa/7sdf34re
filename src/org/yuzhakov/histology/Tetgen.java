@@ -1,14 +1,14 @@
 package org.yuzhakov.histology;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.omg.CosNaming.IstringHelper;
 import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.Tetrahedron;
+
+import com.kenai.jffi.Array;
 
 import de.jreality.shader.Color;
 
@@ -23,16 +23,51 @@ public class Tetgen {
 	private int[] tetrahedrons;
 	private int numberOfTetrahedrons;
 	
-	private Color color;
-	
 	static {
-		System.load(
-				new File("lib/JavaTetgen.dll").getAbsolutePath());
+		try {
+			System.loadLibrary("tetgen");
+		} catch (UnsatisfiedLinkError e) {
+			String path = JniLoader.loadDllFromJar("tetgen");
+			System.load(path);
+		}
+	}
+	
+	public Tetgen(List<Vertex> vertexList, List<int[]> facesList){
+		//vertexes
+		numberOfVertexes = vertexList.size();
+		vertexes = new double[numberOfVertexes*3];
+		int i = 0;
+		for (Vertex v : vertexList) {
+			vertexes[i] = v.X;
+			vertexes[i + 1] = v.Y;
+			vertexes[i + 2] = v.Z;
+			i += 3;
+		}
+		
+		//faces
+		numberOfFaces = facesList.size();
+		facesSizes = new int[numberOfFaces];
+		int sum = 0;
+		i = 0;
+		for (int[] face : facesList){
+			int faceSize = face.length;
+			facesSizes[i] = faceSize;
+			sum += faceSize;
+			++i;
+		}
+		
+		faces = new int[sum];
+		i = 0;
+		for (int[] face : facesList){
+			for (int v : face){
+				faces[i] = v;
+				++i;
+			}
+		}
 	}
 	
 	public Tetgen(Cell cell){
 		CellPrototype cellPrototype = cell.getPrototype();
-		color = cellPrototype.getColor();
 		//vertexes
 		numberOfVertexes = cellPrototype.getNumberOfVertexes();
 		vertexes = new double[numberOfVertexes*3];
@@ -75,7 +110,6 @@ public class Tetgen {
 	}
 	
 	public Tetgen(CellPrototype cellPrototype){
-		color = cellPrototype.getColor();
 		//vertexes
 		numberOfVertexes = cellPrototype.getNumberOfVertexes();
 		vertexes = new double[numberOfVertexes*3];
@@ -118,6 +152,10 @@ public class Tetgen {
 	}
 	
 	public native void tetrahedralize(String params);
+	
+	public void tetrahedralize(){
+		tetrahedralize(null);
+	}
 
 	public double[] getVertexes() {
 		return vertexes;
@@ -147,7 +185,7 @@ public class Tetgen {
 		return numberOfTetrahedrons;
 	}
 	
-	public List<Tetrahedron> getTetrahedronList(){
+	public List<Tetrahedron> getTetrahedronList(Color color){
 		ArrayList<Tetrahedron> tetraList = new ArrayList<>();
 		for (int i = 0; i < numberOfTetrahedrons*4;i+=4){
 			Vertex[] tetrahedron = new Vertex[]{
@@ -159,6 +197,10 @@ public class Tetgen {
 			tetraList.add(new Tetrahedron(tetrahedron, color));
 		}
 		return tetraList;
+	}
+	
+	public List<Tetrahedron> getTetrahedronList(){
+		return getTetrahedronList(Color.BLACK);
 	}
 	
 	private Vertex getVertex(int index){
