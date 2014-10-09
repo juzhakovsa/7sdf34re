@@ -422,12 +422,12 @@ public class Gekko {
 		base7.addTopologyVertex(new Vertex(D/2, -D/6, 0.0)); 	//0
 		base7.addTopologyVertex(new Vertex(D/2, D/6, 0.0)); 	//1			
 				
-		base7.addAuxilaryVertex(new Vertex(0, D/6, 0.0)); 		//2
+//		base7.addAuxilaryVertex(new Vertex(0, D/6, 0.0)); 		//2
 
 		base7.addTopologyVertex(new Vertex(-D/2, D/6, 0.0)); 	//3
 		base7.addTopologyVertex(new Vertex(-D/2, -D/6, 0.0)); 	//4
 				
-		base7.addAuxilaryVertex(new Vertex(0, -D/6, 0.0)); 		//5		
+//		base7.addAuxilaryVertex(new Vertex(0, -D/6, 0.0)); 		//5		
 
 		
 //		int[][] mapping7 = new int[][]{
@@ -442,15 +442,15 @@ public class Gekko {
 				{0,0},
 				{1,0},							
 //				{2,1},
+				{2,1},
 				{3,1},
-				{4,1},
 //				{5,1}
 		};
 		
 		Base base8 = new Base();
 		base8.addTopologyVertex(new Vertex(D/3, 0, 0.0));	//0
-//		base8.addAuxilaryVertex(new Vertex(0, 0, 0.0));		//1
 		base8.addTopologyVertex(new Vertex(-D/3, 0, 0.0));	//2
+		base8.addAuxilaryVertex(new Vertex(0, 0.0, 0.0));		//1
 
 		CellPrototype cellA = new CellPrototype();
 		cellA.getBases().add(base0);

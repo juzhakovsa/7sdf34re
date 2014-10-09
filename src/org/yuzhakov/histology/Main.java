@@ -28,7 +28,7 @@ public class Main {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
             	CellPrototype cellPrototype = Gekko.cellTypeA();
-				for (int i = 0; i < 6; ++i){
+				for (int i = 0; i < 7; ++i){
 					cellPrototype.getBases().remove(0);
 					cellPrototype.getMappings().remove(0);
 				}
