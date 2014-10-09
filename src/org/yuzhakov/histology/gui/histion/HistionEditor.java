@@ -19,9 +19,9 @@ import javax.swing.table.AbstractTableModel;
 
 import org.yuzhakov.histology.Util;
 import org.yuzhakov.histology.gui.cell.LayerEditor.LayerTableModel;
-import org.yuzhakov.histology.model.Cell;
-import org.yuzhakov.histology.model.CellPrototype;
-import org.yuzhakov.histology.model.Topology;
+import org.yuzhakov.histology.model.m2D.Topology;
+import org.yuzhakov.histology.model.m3D.Cell;
+import org.yuzhakov.histology.model.m3D.CellPrototype;
 import org.yuzhakov.histology.model.samples.Gekko;
 
 import net.miginfocom.swing.MigLayout;

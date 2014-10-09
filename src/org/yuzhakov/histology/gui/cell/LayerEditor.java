@@ -20,7 +20,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.AbstractTableModel;
 
 import org.yuzhakov.histology.Util;
-import org.yuzhakov.histology.model.Topology;
+import org.yuzhakov.histology.model.m2D.Topology;
 
 import net.miginfocom.swing.MigLayout;
 

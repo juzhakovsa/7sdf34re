@@ -5,8 +5,8 @@ import static de.jreality.shader.CommonAttributes.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.m3D.Cell;
 
 import de.jreality.geometry.IndexedFaceSetFactory;
 import de.jreality.scene.Appearance;

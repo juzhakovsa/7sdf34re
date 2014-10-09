@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
 
-import org.yuzhakov.histology.model.CellPrototype;
-import org.yuzhakov.histology.model.Topology;
+import org.yuzhakov.histology.model.m2D.Topology;
+import org.yuzhakov.histology.model.m3D.CellPrototype;
 import org.yuzhakov.histology.model.samples.Gekko;
 
 import net.miginfocom.swing.MigLayout;

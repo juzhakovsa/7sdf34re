@@ -1,14 +1,17 @@
-package org.yuzhakov.histology.model;
+package org.yuzhakov.histology.model.m3D;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.Util;
+import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.m2D.Base;
+import org.yuzhakov.histology.model.m2D.Topology;
 
 import de.jreality.shader.Color;
 
 public class CellPrototype {
-	private List<Topology> topologies = new ArrayList<>();
+	private List<Base> bases = new ArrayList<>();
 	private List<int[][]> mappings = new ArrayList<>();
 	private Color color;
 	
@@ -23,17 +26,17 @@ public class CellPrototype {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	
+	public List<Base> getBases() {
+		return bases;
+	}
 
-	public List<Topology> getTopologies() {
-		return topologies;
+	public Base getBottomTopology(){
+		return bases.get(0);
 	}
 	
-	public Topology getBottomTopology(){
-		return topologies.get(0);
-	}
-	
-	public Topology getTopTopology(){
-		return topologies.get(topologies.size() - 1);
+	public Base getTopBase(){
+		return bases.get(bases.size() - 1);
 	}
 
 	public List<int[][]> getMappings() {
@@ -43,25 +46,23 @@ public class CellPrototype {
 	public int getNumberOfVertexes(int till_level){
 		int s = 0;
 		for (int i = 0; i < till_level;++i){
-			s += topologies.get(i).getSize();
+			s += bases.get(i).size();
 		}
 		return s;
 	}
 	
 	public int getNumberOfVertexes(){
-		return getNumberOfVertexes(topologies.size());
+		return getNumberOfVertexes(bases.size());
 	}
 	
-	public List<Vertex[]> getTopologiesVertices(){
-		List<Vertex[]> vertexs = new ArrayList<>();
-		for (Topology topology : topologies){
-			Vertex[] layer = new Vertex[topology.getSize()];
-			vertexs.add(layer);
-			for (int i = 0; i < layer.length; ++i){
-				layer[i] = new Vertex(topology.getCoordinates()[i]); //copy
+	public List<Vertex> getVertices(){
+		List<Vertex> vertices = new ArrayList<>();
+		for (Base base : bases){
+			for (Vertex vertex : base.getAllVertices()){
+				vertices.add(new Vertex(vertex));
 			}
 		}
-		return vertexs;
+		return vertices;
 	}
 	
 	public List<int[]> getFaceIndices(){

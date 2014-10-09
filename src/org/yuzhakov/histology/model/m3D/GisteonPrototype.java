@@ -1,7 +1,9 @@
-package org.yuzhakov.histology.model;
+package org.yuzhakov.histology.model.m3D;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.yuzhakov.histology.model.Vertex;
 
 public class GisteonPrototype {
 	private List<CellPrototype> cells = new ArrayList<>();

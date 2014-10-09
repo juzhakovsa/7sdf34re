@@ -3,10 +3,10 @@ package org.yuzhakov.histology;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.yuzhakov.histology.model.Cell;
-import org.yuzhakov.histology.model.CellPrototype;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.Tetrahedron;
+import org.yuzhakov.histology.model.m3D.Cell;
+import org.yuzhakov.histology.model.m3D.CellPrototype;
 
 import com.kenai.jffi.Array;
 
@@ -116,7 +116,7 @@ public class Tetgen {
 		int i = 0;
 		int j = 0;
 		int layer = 0;
-		for (Vertex[] topologyCoordinates : cellPrototype.getTopologiesVertices()){
+		for (Vertex[] topologyCoordinates : cellPrototype.getVertices()){
 			for (Vertex v:topologyCoordinates){
 				vertexes[i] = v.X;
 				vertexes[i+1] = v.Y;

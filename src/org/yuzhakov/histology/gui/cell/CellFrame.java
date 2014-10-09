@@ -13,7 +13,7 @@ import javax.swing.JToolBar;
 
 import org.yuzhakov.histology.gui.EditorFrame;
 import org.yuzhakov.histology.gui.JRealityComponent;
-import org.yuzhakov.histology.model.CellPrototype;
+import org.yuzhakov.histology.model.m3D.CellPrototype;
 import org.yuzhakov.histology.model.samples.Gekko;
 
 import net.miginfocom.swing.MigLayout;

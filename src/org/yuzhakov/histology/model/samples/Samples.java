@@ -1,8 +1,8 @@
 package org.yuzhakov.histology.model.samples;
 
-import org.yuzhakov.histology.model.CellPrototype;
-import org.yuzhakov.histology.model.Topology;
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.m2D.Topology;
+import org.yuzhakov.histology.model.m3D.CellPrototype;
 
 public class Samples {
 	

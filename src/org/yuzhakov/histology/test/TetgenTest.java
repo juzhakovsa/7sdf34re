@@ -20,13 +20,13 @@ import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.gui.jreality.JrCellCut;
 import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.gui.jreality.JrModelCut;
-import org.yuzhakov.histology.model.Cell;
-import org.yuzhakov.histology.model.CellPrototype;
-import org.yuzhakov.histology.model.Topology;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.CellCut;
 import org.yuzhakov.histology.model.cut.CutPlane;
 import org.yuzhakov.histology.model.cut.ModelCut;
+import org.yuzhakov.histology.model.m2D.Topology;
+import org.yuzhakov.histology.model.m3D.Cell;
+import org.yuzhakov.histology.model.m3D.CellPrototype;
 import org.yuzhakov.histology.model.samples.Gekko;
 import org.yuzhakov.histology.triangulation.Triangulation;
 

@@ -1,9 +1,10 @@
-package org.yuzhakov.histology.model;
+package org.yuzhakov.histology.model.m2D;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.Util;
+import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.triangulation.Triangulation;
 
 public class Topology {

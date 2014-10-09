@@ -1,8 +1,12 @@
-package org.yuzhakov.histology.model;
+package org.yuzhakov.histology.model.m3D;
 
 import de.jreality.shader.Color;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.m2D.Topology;
 
 public class Cell {
 	private CellPrototype prototype;

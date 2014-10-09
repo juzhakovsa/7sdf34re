@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.yuzhakov.histology.Settings;
-import org.yuzhakov.histology.model.Cell;
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.m3D.Cell;
 
 public class CellCut {
 	private CutPlane cutPlane;

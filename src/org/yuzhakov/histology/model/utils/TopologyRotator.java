@@ -3,7 +3,7 @@ package org.yuzhakov.histology.model.utils;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import org.yuzhakov.histology.model.Topology;
+import org.yuzhakov.histology.model.m2D.Topology;
 
 public class TopologyRotator {
 	/**

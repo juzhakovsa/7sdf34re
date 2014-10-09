@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.Tetgen;
-import org.yuzhakov.histology.model.Cell;
+import org.yuzhakov.histology.model.m3D.Cell;
 
 public class ModelCut {
 	private List<Cell> cells;

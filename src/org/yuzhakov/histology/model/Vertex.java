@@ -20,10 +20,14 @@ public class Vertex {
 	}
 
 	public Vertex(double x, double y, double z) {
-		super();
+		this();
 		X = x;
 		Y = y;
 		Z = z;
+	}
+	
+	public Vertex(double x, double y) {
+		this(x, y, 0.0);
 	}
 	
 	public Vertex(Vertex v) {
