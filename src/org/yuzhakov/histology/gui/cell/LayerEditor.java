@@ -10,16 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.AbstractTableModel;
 
 import org.yuzhakov.histology.Util;
+import org.yuzhakov.histology.model.m2D.Base;
 import org.yuzhakov.histology.model.m2D.Topology;
 
 import net.miginfocom.swing.MigLayout;
@@ -28,11 +27,11 @@ public class LayerEditor extends JPanel {
 	private JSpinner sizeSpinner;
 	protected LayerTableModel tableModel;
 	protected JTable table;
-	private Topology topology;
+	private Base base;
 
-	public LayerEditor(String name, Topology topology) {
+	public LayerEditor(String name, Base base) {
 		super(new MigLayout());
-		this.topology = topology;
+		this.base = base;
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
@@ -54,7 +53,7 @@ public class LayerEditor extends JPanel {
 		JButton deleteLayerButton = new JButton("Удалить");
 		deleteLayerButton.setPreferredSize(new Dimension(100, deleteLayerButton.getHeight()));
 
-		tableModel = new LayerTableModel(topology);
+		tableModel = new LayerTableModel(base);
 		table = new JTable(tableModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setRowSelectionAllowed(false);
@@ -71,17 +70,17 @@ public class LayerEditor extends JPanel {
 	}
 	
 	private void initialize(){
-		sizeSpinner.setValue(topology.getSize());
+		sizeSpinner.setValue(base.size());
 	}
 
 	public static class LayerTableModel extends AbstractTableModel {
 		private int size;
-		private Topology topology;
+		private Base base;
 
-		public LayerTableModel(Topology topology) {
+		public LayerTableModel(Base base) {
 			super();
-			this.size = topology.getSize();
-			this.topology = topology;
+			this.size = base.size();
+			this.base = base;
 		}
 
 		@Override
@@ -115,10 +114,10 @@ public class LayerEditor extends JPanel {
 			case 0:
 				return "Вершина "+(rowIndex+1);
 			case 1:
-				double X = topology.getCoordinates()[rowIndex].X;
+				double X = base.getAllVertices().get(rowIndex).X;
 				return String.valueOf(Util.round(X));
 			case 2:
-				double Y = topology.getCoordinates()[rowIndex].Y;
+				double Y = base.getAllVertices().get(rowIndex).Y;
 				return String.valueOf(Util.round(Y));
 			case 3:
 				return String.valueOf(rowIndex+1);

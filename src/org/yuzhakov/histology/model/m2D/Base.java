@@ -1,14 +1,27 @@
 package org.yuzhakov.histology.model.m2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.triangulation.Triangulation;
 
 public class Base{
-	private List<Vertex> topologyVertices;
-	private List<Vertex> auxilaryVertices;
-	private List<Vertex> allVertices;
-	private List<Boolean> isTopologicalList;
+	private List<Vertex> topologyVertices = new ArrayList<>();
+	private List<Vertex> auxilaryVertices = new ArrayList<>();
+	private List<Vertex> allVertices = new ArrayList<>();
+	private List<Integer> topologyVerticesIndex = new ArrayList<>();
+	
+	public Base(){
+		super();
+	}
+	
+	public Base(Topology topology){
+		this();
+		for (Vertex vertex : topology.getCoordinates()){
+			addTopologyVertex(vertex);
+		}
+	}
 	
 	public List<Vertex> getTopologyVertices() {
 		return topologyVertices;
@@ -28,20 +41,32 @@ public class Base{
 	public void setAllVertices(List<Vertex> allVertices) {
 		this.allVertices = allVertices;
 	}
+	
+	public List<Integer> getTopologyVerticesIndex() {
+		return topologyVerticesIndex;
+	}
+	public void setTopologyVerticesIndex(List<Integer> topologyVerticesIndex) {
+		this.topologyVerticesIndex = topologyVerticesIndex;
+	}
 	public int addTopologyVertex(Vertex vertex){
-		topologyVertices.add(vertex);
 		allVertices.add(vertex);
-		isTopologicalList.add(true);
-		return allVertices.size()-1;
+		int index = allVertices.size()-1;
+		topologyVertices.add(vertex);
+		topologyVerticesIndex.add(index);
+		return index;
 	}
 	public int addAuxilaryVertex(Vertex vertex){
-		auxilaryVertices.add(vertex);
 		allVertices.add(vertex);
-		isTopologicalList.add(false);
+		auxilaryVertices.add(vertex);
 		return allVertices.size()-1;
 	}
 	public int size(){
 		return allVertices.size();
+	}
+	public List<int[]> getTriangulation(){
+		return Triangulation.triangulate(
+				topologyVertices,
+				topologyVerticesIndex);
 	}
 	
 }

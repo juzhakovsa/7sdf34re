@@ -1,5 +1,6 @@
 package org.yuzhakov.histology;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -12,9 +13,11 @@ import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.gui.jreality.JrModelCut;
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.cut.CellCut;
 import org.yuzhakov.histology.model.cut.CutPlane;
 import org.yuzhakov.histology.model.cut.ModelCut;
 import org.yuzhakov.histology.model.m3D.Cell;
+import org.yuzhakov.histology.model.m3D.CellPrototype;
 import org.yuzhakov.histology.model.samples.Gekko;
 
 import de.jreality.scene.SceneGraphComponent;
@@ -22,7 +25,23 @@ import de.jreality.util.SceneGraphUtility;
 
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
-		 //Schedule a job for the event-dispatching thread:
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	CellPrototype cellPrototype = Gekko.cellTypeA();
+				for (int i = 0; i < 6; ++i){
+					cellPrototype.getBases().remove(0);
+					cellPrototype.getMappings().remove(0);
+				}
+				Cell cell = new Cell(cellPrototype);
+				cut(cell);
+            }           
+		});
+	}
+	
+	
+	
+	public static void main2(String[] args) throws InterruptedException {
+		//Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {        		
@@ -34,38 +53,44 @@ public class Main {
 //				List<Cell> cells = Gekko.getModel(3, 3);
 				
 				List<Cell> gistion = Gekko.getGisteon(new Vertex());
-        		JrCell jrCell2 = new JrCell(gistion.get(8));
-        		world2.addChild(jrCell2.getSceneGraphComponent());
+				CellPrototype cellPrototype = Gekko.cellTypeA();
+				for (int i = 0; i < 6; ++i){
+					cellPrototype.getBases().remove(0);
+					cellPrototype.getMappings().remove(0);
+				}
+				Cell cell = new Cell(cellPrototype);
+				
+        		JrCell jrCell = new JrCell(cell);
+//        		world.addChild(jrCell2.getSceneGraphComponent());
 				
 //				List<Cell> cells = gisteon;
 //				cells.add(gisteon.get(2));
 				
-				for (Cell cell : gistion){
-					JrCell jrCell = new JrCell(cell);
-					world.addChild(jrCell.getSceneGraphComponent());
-				}
+//				for (Cell cell : gistion){
+//					JrCell jrCell = new JrCell(cell);
+//					world.addChild(jrCell.getSceneGraphComponent());
+//				}
 				
-				final CutPlane cutPlane = new CutPlane();
-				cutPlane.construct();
-				final JrCutPlane JRcutPlane = new JrCutPlane(cutPlane);
-				JRcutPlane.setPlaneSize(40, 40, 20);
-				JRcutPlane.update();
-				
-				final ModelCut modelCut = new ModelCut(gistion, cutPlane);
-				final JrModelCut jrModelCut = new JrModelCut(modelCut);
-				
-				
-				world.addChild(JRcutPlane.getSceneGraphComponent());
+//				final CutPlane cutPlane = new CutPlane();
+//				cutPlane.construct();
+//				final JrCutPlane JRcutPlane = new JrCutPlane(cutPlane);
+//				JRcutPlane.setPlaneSize(40, 40, 20);
+//				JRcutPlane.update();
+//				
+//				final ModelCut modelCut = new ModelCut(gistion, cutPlane);
+//				final JrModelCut jrModelCut = new JrModelCut(modelCut);
+//				jrModelCut.getSceneGraphComponent();				
+//				world.addChild(JRcutPlane.getSceneGraphComponent());
 
             	ModelFrame modelTestFrame = new ModelFrame(world, "Модель Геккона"){
             		@Override
             		public void sliderStateChanged(double A, double B, double Z) {
-            			cutPlane.setA(A);
-            			cutPlane.setB(B);
-            			cutPlane.setZ(Z*height);
-            			cutPlane.construct();
-            			JRcutPlane.update();
-            			jrModelCut.update();
+//            			cutPlane.setA(A);
+//            			cutPlane.setB(B);
+//            			cutPlane.setZ(Z*height);
+//            			cutPlane.construct();
+//            			JRcutPlane.update();
+//            			jrModelCut.update();
             		}
             	};
 //            	
@@ -84,5 +109,49 @@ public class Main {
 //				modelFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
         });
+	}
+	
+	private static void show(Cell cell){
+		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
+		JrCell jrCell = new JrCell(cell);
+		world.addChild(jrCell.getSceneGraphComponent());
+		ResultFrame resultFrame = new ResultFrame(world, "");
+    	resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+	}
+	
+	private static void cut(Cell cell){
+		final int HEIGHT = cell.getNumberOfBases();
+		
+		final CutPlane cutPlane = new CutPlane();
+		cutPlane.construct();		
+		ArrayList<Cell> cells = new ArrayList<>();
+		cells.add(cell);
+		final ModelCut modelCut = new ModelCut(cells, cutPlane);
+		
+		final JrCell jrCell = new JrCell(cell);
+		final JrCutPlane jrCutPlane = new JrCutPlane(cutPlane);
+		final JrModelCut jrModelCut = new JrModelCut(modelCut);
+		
+		final SceneGraphComponent model = SceneGraphUtility.createFullSceneGraphComponent();
+		model.addChild(jrCell.getSceneGraphComponent());
+		model.addChild(jrCutPlane.getSceneGraphComponent());
+		
+		final SceneGraphComponent result = SceneGraphUtility.createFullSceneGraphComponent();
+		result.addChild(jrModelCut.getSceneGraphComponent());
+		
+    	ModelFrame modelTestFrame = new ModelFrame(model, "Модель"){
+    		@Override
+    		public void sliderStateChanged(double A, double B, double Z) {
+    			cutPlane.setA(A);
+    			cutPlane.setB(B);
+    			cutPlane.setZ(Z*HEIGHT);
+    			cutPlane.construct();
+    			jrCutPlane.update();
+    			jrModelCut.update();
+    		}
+    	};
+		
+		ResultFrame resultFrame = new ResultFrame(result, "");
+    	resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 	}
 }

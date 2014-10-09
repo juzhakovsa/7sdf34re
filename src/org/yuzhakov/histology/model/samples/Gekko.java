@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.m2D.Base;
 import org.yuzhakov.histology.model.m2D.Topology;
 import org.yuzhakov.histology.model.m3D.Cell;
 import org.yuzhakov.histology.model.m3D.CellPrototype;
@@ -82,25 +83,25 @@ public class Gekko {
 		return cells;
 	}
 	
-	public static CellPrototype cellTypeA(){		
-		Topology topology0 = new Topology(new Vertex[] {
-				new Vertex(H, -0.5, 0.0), 				//0
-				new Vertex(H, 0.5, 0.0), 				//1
-				new Vertex((0.5+D/2), (0.5+D/2), 0.0), 	//2
-				new Vertex(0.5, H, 0.0), 				//3
-				new Vertex(-0.5, H, 0.0), 				//4
-				new Vertex(-(0.5+D/2), (0.5+D/2), 0.0), //5
-				new Vertex(-H, 0.5, 0.0), 				//6
-				new Vertex(-H, -0.5, 0.0), 				//7
-				new Vertex(-(0.5+D/2), -(0.5+D/2), 0.0),//8
-				new Vertex(-0.5, -H, 0.0), 				//9
-				new Vertex(0.5, -H, 0.0), 				//10
-				new Vertex((0.5+D/2), -(0.5+D/2), 0.0),	//11
-				});
+	public static CellPrototype cellTypeA(){
+		Base base0 = new Base();
 		
-		int[][] mapping0 = getDefaultMapping(topology0.getSize());
+		base0.addTopologyVertex(new Vertex(H, -0.5, 0.0)); // 0
+		base0.addTopologyVertex(new Vertex(H, 0.5, 0.0)); // 1
+		base0.addTopologyVertex(new Vertex((0.5 + D / 2), (0.5 + D / 2), 0.0)); // 2
+		base0.addTopologyVertex(new Vertex(0.5, H, 0.0)); // 3
+		base0.addTopologyVertex(new Vertex(-0.5, H, 0.0)); // 4
+		base0.addTopologyVertex(new Vertex(-(0.5 + D / 2), (0.5 + D / 2), 0.0)); // 5
+		base0.addTopologyVertex(new Vertex(-H, 0.5, 0.0)); // 6
+		base0.addTopologyVertex(new Vertex(-H, -0.5, 0.0)); // 7
+		base0.addTopologyVertex(new Vertex(-(0.5 + D / 2), -(0.5 + D / 2), 0.0)); // 8
+		base0.addTopologyVertex(new Vertex(-0.5, -H, 0.0)); // 9
+		base0.addTopologyVertex(new Vertex(0.5, -H, 0.0)); // 10
+		base0.addTopologyVertex(new Vertex((0.5 + D / 2), -(0.5 + D / 2), 0.0)); // 11
+
+		int[][] mapping0 = getDefaultMapping(base0.size());
 		
-		Topology topology1 = topology0;
+		Base base1 =  base0;
 		
 		int[][] mapping1 = new int[][]{
 				{0,0},
@@ -144,6 +145,7 @@ public class Gekko {
 				new Vertex((0.5+D/3), -(0.5+D/3), 0.0), 	//14
 				new Vertex((0.5+D/2), -(0.5+D/2), 0.0), 	//15
 				});
+		Base base2 = new Base(topology2);
 		
 		int[][] mapping2 = new int[][]{
 				{0,0},
@@ -203,6 +205,7 @@ public class Gekko {
 				new Vertex((0.5+D/3), -(0.5+D/3), 0.0), //22
 				new Vertex((0.5+D/2), -(0.5+D/2), 0.0), //23
 				});
+		Base base3 = new Base(topology3);
 		
 		int[][] mapping3 = getDefaultMapping(topology3.getSize());
 		
@@ -237,6 +240,7 @@ public class Gekko {
 				new Vertex((0.5+D/3), -(0.5+D/3), 0.0), //22
 				new Vertex((0.5+D/2), -(0.5+D/2), 0.0), //23
 				});
+		Base base4 = new Base(topology4);
 		
 		int[][] mapping4 = new int[][]{
 				{0,0},
@@ -305,6 +309,7 @@ public class Gekko {
 				new Vertex((0.5+D/3), -(0.5+D/3), 0.0), //24
 				new Vertex((0.5+D/2), -(0.5+D/2), 0.0), //25
 		});
+		Base base5 = new Base(topology5);
 		
 		int[][] mapping5 = new int[][]{
 				{0,0},
@@ -363,6 +368,7 @@ public class Gekko {
 				new Vertex((0.5-D/6), -(0.5+D/6), 0.0), 			//16
 				new Vertex((0.5+D/2)-EPS, -(0.5+D/6)-EPS, 0.0), 	//17	
 		});
+		Base base6 = new Base(topology6);
 		
 		int[][] mapping6 = new int[][]{
 				{0,0},
@@ -390,44 +396,72 @@ public class Gekko {
 				{17,0},
 		};
 		
-		Topology topology7 = new Topology(new Vertex[] {
-				new Vertex(D/2, -D/6, 0.0), 	//0
-				new Vertex(D/2, D/6, 0.0), 		//1			
-				
-				new Vertex(0, D/6, 0.0), 		//2
+		base6 = new Base();
 
-				new Vertex(-D/2, D/6, 0.0), 	//3
-				new Vertex(-D/2, -D/6, 0.0), 	//4
+		base6.addTopologyVertex(new Vertex(D/2, -D/6, 0.0)); 	//0
+		base6.addTopologyVertex(new Vertex(D/2, D/6, 0.0)); 	//1			
 				
-				new Vertex(0, -D/6, 0.0), 		//5
-		});
+		base6.addTopologyVertex(new Vertex(0, D/6, 0.0)); 		//2
+
+		base6.addTopologyVertex(new Vertex(-D/2, D/6, 0.0)); 	//3
+		base6.addTopologyVertex(new Vertex(-D/2, -D/6, 0.0)); 	//4
+				
+		base6.addTopologyVertex(new Vertex(0, -D/6, 0.0)); 		//5
 		
-		int[][] mapping7 = new int[][]{
-				{0,0},
-				{1,0},				
-				{2,1},				
-				{3,2},
-				{4,2},
-				{5,3},
+		mapping6 = new int[][]{
+			{0,0},
+			{1,1},				
+			{2,2},				
+			{3,3},
+			{4,4},
+			{5,5},
 		};
 		
-		Topology topology8 = new Topology(new Vertex[] {
-				new Vertex(D/3, 0, 0.0), 	//0
-				new Vertex(0, 0, 0.0), 		//1
-				new Vertex(-D/3, 0, 0.0), 	//2
-				new Vertex(0, -EPS, 0.0), 	//3
-		});
+		Base base7 = new Base();
+
+		base7.addTopologyVertex(new Vertex(D/2, -D/6, 0.0)); 	//0
+		base7.addTopologyVertex(new Vertex(D/2, D/6, 0.0)); 	//1			
+				
+		base7.addAuxilaryVertex(new Vertex(0, D/6, 0.0)); 		//2
+
+		base7.addTopologyVertex(new Vertex(-D/2, D/6, 0.0)); 	//3
+		base7.addTopologyVertex(new Vertex(-D/2, -D/6, 0.0)); 	//4
+				
+		base7.addAuxilaryVertex(new Vertex(0, -D/6, 0.0)); 		//5		
+
+		
+//		int[][] mapping7 = new int[][]{
+//				{0,0},
+//				{1,0},				
+//				{2,1},				
+//				{3,2},
+//				{4,2},
+//				{5,1},
+//		};
+		int[][] mapping7 = new int[][]{
+				{0,0},
+				{1,0},							
+//				{2,1},
+				{3,1},
+				{4,1},
+//				{5,1}
+		};
+		
+		Base base8 = new Base();
+		base8.addTopologyVertex(new Vertex(D/3, 0, 0.0));	//0
+//		base8.addAuxilaryVertex(new Vertex(0, 0, 0.0));		//1
+		base8.addTopologyVertex(new Vertex(-D/3, 0, 0.0));	//2
 
 		CellPrototype cellA = new CellPrototype();
-		cellA.getTopologies().add(topology0);
-		cellA.getTopologies().add(topology1);
-		cellA.getTopologies().add(topology2);
-		cellA.getTopologies().add(topology3);
-		cellA.getTopologies().add(topology4);
-		cellA.getTopologies().add(topology5);
-		cellA.getTopologies().add(topology6);
-		cellA.getTopologies().add(topology7);
-		cellA.getTopologies().add(topology8);
+		cellA.getBases().add(base0);
+		cellA.getBases().add(base1);
+		cellA.getBases().add(base2);
+		cellA.getBases().add(base3);
+		cellA.getBases().add(base4);
+		cellA.getBases().add(base5);
+		cellA.getBases().add(base6);
+		cellA.getBases().add(base7);
+		cellA.getBases().add(base8);
 		
 		cellA.getMappings().add(mapping0);
 		cellA.getMappings().add(mapping1);
@@ -600,14 +634,14 @@ public class Gekko {
 		});
 
 		CellPrototype cellB = new CellPrototype();
-		cellB.getTopologies().add(topology0);
-		cellB.getTopologies().add(topology1);
-		cellB.getTopologies().add(topology2);
-		cellB.getTopologies().add(topology3);
-		cellB.getTopologies().add(topology4);
-		cellB.getTopologies().add(topology5);
-		cellB.getTopologies().add(topology6);
-		cellB.getTopologies().add(topology7);
+		cellB.getBases().add(new Base(topology0));
+		cellB.getBases().add(new Base(topology1));
+		cellB.getBases().add(new Base(topology2));
+		cellB.getBases().add(new Base(topology3));
+		cellB.getBases().add(new Base(topology4));
+		cellB.getBases().add(new Base(topology5));
+		cellB.getBases().add(new Base(topology6));
+		cellB.getBases().add(new Base(topology7));
 		
 		cellB.getMappings().add(mapping0);
 		cellB.getMappings().add(mapping1);
@@ -762,14 +796,14 @@ public class Gekko {
 		});
 		
 		CellPrototype cellC = new CellPrototype();
-		cellC.getTopologies().add(topology0);
-		cellC.getTopologies().add(topology1);
-		cellC.getTopologies().add(topology2);
-		cellC.getTopologies().add(topology3);
-		cellC.getTopologies().add(topology4);
-		cellC.getTopologies().add(topology5);
-		cellC.getTopologies().add(topology6);
-		cellC.getTopologies().add(topology7);
+		cellC.getBases().add(new Base(topology0));
+		cellC.getBases().add(new Base(topology1));
+		cellC.getBases().add(new Base(topology2));
+		cellC.getBases().add(new Base(topology3));
+		cellC.getBases().add(new Base(topology4));
+		cellC.getBases().add(new Base(topology5));
+		cellC.getBases().add(new Base(topology6));
+		cellC.getBases().add(new Base(topology7));
 		
 //		cellA.getMappings().add(getDefaultMapping(topology5.getSize()));
 		cellC.getMappings().add(mapping0);
@@ -855,11 +889,11 @@ public class Gekko {
 		});
 		
 		CellPrototype cellD = new CellPrototype();
-		cellD.getTopologies().add(topology0);
-		cellD.getTopologies().add(topology1);
-		cellD.getTopologies().add(topology2);
-		cellD.getTopologies().add(topology3);
-		cellD.getTopologies().add(topology4);
+		cellD.getBases().add(new Base(topology0));
+		cellD.getBases().add(new Base(topology1));
+		cellD.getBases().add(new Base(topology2));
+		cellD.getBases().add(new Base(topology3));
+		cellD.getBases().add(new Base(topology4));
 		
 //		cellD.getMappings().add(getDefaultMapping(topology1.getSize()));
 		cellD.getMappings().add(mapping0);

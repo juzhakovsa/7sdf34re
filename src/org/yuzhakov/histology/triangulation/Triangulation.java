@@ -1,7 +1,6 @@
 package org.yuzhakov.histology.triangulation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.poly2tri.Poly2Tri;
@@ -12,43 +11,66 @@ import org.poly2tri.triangulation.delaunay.DelaunayTriangle;
 import org.yuzhakov.histology.model.Vertex;
 
 public class Triangulation {	
-	public static List<int[]> triangulate(Vertex[] vertexes){
-		List<Vertex> vertexList = new ArrayList<>(Arrays.asList(vertexes));		
+	public static List<int[]> triangulate(List<Vertex> vertices, List<Integer> index){
+		if (vertices.size() < 3){
+			return new ArrayList<>();
+		}
+		
 		List<PolygonPoint> points = new ArrayList<>();
-		for (Vertex v:vertexes){
-			points.add(new PolygonPoint(v.X, v.Y, v.Z));
+		if (index == null){
+			for (int i = 0; i < vertices.size(); ++i) {
+				points.add(new TriangulationVertex(vertices.get(i), i));
+			}
+		}else{
+			for (int i = 0; i < vertices.size(); ++i) {
+				points.add(new TriangulationVertex(vertices.get(i), index.get(i)));
+			}
 		}
     	Polygon polygon = new Polygon(points);
     	Poly2Tri.triangulate(polygon);
     	List<int[]> triangles = new ArrayList<>();
     	for (DelaunayTriangle dTriangle : polygon.getTriangles()){
 			triangles.add(
-					getTriangleIndices(
-							getTriangleVertexes(dTriangle),
-							vertexList));
+					getTriangleIndices(dTriangle));
     	}
 		return triangles;
 	}
 	
-	private static Vertex getVertex(TriangulationPoint point){
-		return new Vertex(point.getX(),point.getY(),point.getZ());
+	public static List<int[]> triangulate(List<Vertex> vertices){
+		return triangulate(vertices,null);
 	}
 	
-	private static Vertex[] getTriangleVertexes(DelaunayTriangle triangle){
-		Vertex[] result = new Vertex[3];
-		int i = 0;
-		for (TriangulationPoint p : triangle.points){
-			result[i] = getVertex(p);
-			++i;
-		}
-		return result;
-	}
-	
-	private static int[] getTriangleIndices(Vertex[] triangle, List<Vertex> indexList){
+	private static int[] getTriangleIndices(DelaunayTriangle triangle){
 		int[] indices = new int[3];
-		for (int i = 0; i < triangle.length; ++i){
-			indices[i] = indexList.indexOf(triangle[i]);
+		int i = 0;
+		for (TriangulationPoint point : triangle.points){
+			if (point instanceof TriangulationVertex){
+				TriangulationVertex vertex = (TriangulationVertex) point;
+				indices[i++] = vertex.getIndex();
+			}else{
+				//The case, then triangulation add some extra points. Check that your polygon is flat.
+				throw new ClassCastException("Not realized case, read comments for details");
+			}
 		}
 		return indices;
+	}
+	
+	private static class TriangulationVertex extends PolygonPoint{
+		private Vertex vertex;
+		private int index;
+		
+		public TriangulationVertex(Vertex vertex, int index) {
+			super(vertex.X, vertex.Y, vertex.Z);
+			this.vertex = vertex;
+			this.index = index;
+		}
+
+		public Vertex getVertex() {
+			return vertex;
+		}
+
+		public int getIndex() {
+			return index;
+		}		
 	}
 }

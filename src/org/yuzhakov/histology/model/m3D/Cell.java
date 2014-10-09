@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.m2D.Base;
 import org.yuzhakov.histology.model.m2D.Topology;
 
 public class Cell {
@@ -19,7 +20,7 @@ public class Cell {
 		this.offset = new Vertex();
 		this.angle = 0;
 		this.heights = new ArrayList<>();
-		int size = prototype.getTopologies().size();
+		int size = prototype.getBases().size();
 		for (int i = 0; i < size; ++i){
 			this.heights.add( (double) i );
 		}
@@ -33,15 +34,15 @@ public class Cell {
 	}
 	
 	public List<Vertex[]> getTopologiesVertices(){
-		List<Vertex[]> vertexs = new ArrayList<>();
+		List<Vertex[]> vertices = new ArrayList<>();
 		int level = 0;
-		for (Topology topology : prototype.getTopologies()){
+		for (Base base : prototype.getBases()){
 			double height = heights.get(level);
-			Vertex[] layer = copyWithOffsetRotationHeight(topology.getCoordinates(),offset,angle,height);
-			vertexs.add(layer);
+			Vertex[] layer = copyWithOffsetRotationHeight(base.getAllVertices(),offset,angle,height);
+			vertices.add(layer);
 			++level;
 		}
-		return vertexs;
+		return vertices;
 	}
 	
 	public Color getColor(){
@@ -64,8 +65,8 @@ public class Cell {
 		return angle;
 	}
 	
-	public int getNumberOfTopologies(){
-		return prototype.getTopologies().size();
+	public int getNumberOfBases(){
+		return prototype.getBases().size();
 	}
 	
 	public int getNumberOfVertexes(int till_level){
@@ -76,10 +77,10 @@ public class Cell {
 		return prototype.getNumberOfVertexes();
 	}
 	
-	private static Vertex[] copyWithOffsetRotationHeight(Vertex[] v, Vertex offset, double angle, double Z){
-		Vertex[] result = new Vertex[v.length];
+	private static Vertex[] copyWithOffsetRotationHeight(List<Vertex> v, Vertex offset, double angle, double Z){
+		Vertex[] result = new Vertex[v.size()];
 		for (int i = 0; i < result.length; ++i){
-			result[i] = Vertex.getSumm(offset, Vertex.rotate(v[i], angle));
+			result[i] = Vertex.getSumm(offset, Vertex.rotate(v.get(i), angle));
 			result[i].Z = Z;
 		}
 		return result;

@@ -7,6 +7,7 @@ import org.yuzhakov.histology.Util;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.m2D.Base;
 import org.yuzhakov.histology.model.m2D.Topology;
+import org.yuzhakov.histology.triangulation.Triangulation;
 
 import de.jreality.shader.Color;
 
@@ -31,7 +32,7 @@ public class CellPrototype {
 		return bases;
 	}
 
-	public Base getBottomTopology(){
+	public Base getBottomBase(){
 		return bases.get(0);
 	}
 	
@@ -69,7 +70,7 @@ public class CellPrototype {
 		ArrayList<int[]> facesList = new ArrayList<>();
 		facesList.addAll(getBottomFaceIndices());
 		facesList.addAll(getTopFaceIndices());
-		int numberOfLayers = topologies.size() - 1;
+		int numberOfLayers = mappings.size();
 		for (int i = 0; i < numberOfLayers; ++i){
 			facesList.addAll(getSideFaceIndices(i));
 		}
@@ -77,18 +78,17 @@ public class CellPrototype {
 	}
 	
 	private List<int[]> getBottomFaceIndices(){
-		return getBottomTopology().getTriangles();
+		return getBottomBase().getTriangulation();
 	}
 	
 	private List<int[]> getTopFaceIndices(){
-		int offset = getNumberOfVertexes(topologies.size() - 1);
-		List<int[]> topFaceIndices = new ArrayList<>();
-		for (int[] triangle : getTopTopology().getTriangles()){
-			int[] face = new int[triangle.length];
-			for (int i = 0; i < triangle.length;++i){
-				face[i] = triangle[i] + offset;
+		int offset = getNumberOfVertexes(bases.size() - 1);
+		List<int[]> topFaceIndices = getTopBase().getTriangulation();
+		for (int[] face : topFaceIndices){
+			for (int i = 0; i < face.length;++i){
+				int index = face[i];
+				face[i] = index + offset;
 			}
-			topFaceIndices.add(face);
 		}
 		return topFaceIndices;
 	}

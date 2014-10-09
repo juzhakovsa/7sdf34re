@@ -1,6 +1,7 @@
 package org.yuzhakov.histology.model.m2D;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.yuzhakov.histology.Util;
@@ -12,18 +13,12 @@ public class Topology {
 	private double[] edges;
 	private double[] angles;
 	private Vertex[] coordinates;
-	private List<int[]> triangles;
 	
 	public Topology(Vertex[] v) {
 		size = v.length;		
 		coordinates = new Vertex[size];
 		for (int i = 0; i < v.length; ++i){
 			coordinates[i] = new Vertex(v[i]); // copy
-		}
-		if (v.length > 2)
-			triangles = Triangulation.triangulate(v);
-		else{
-			triangles = new ArrayList<>();
 		}
 		
 //		edges = getEdges(v);
@@ -44,10 +39,6 @@ public class Topology {
 
 	public Vertex[] getCoordinates() {
 		return coordinates;
-	}
-	
-	public List<int[]> getTriangles() {
-		return triangles;
 	}
 	
 	public void normalize(){

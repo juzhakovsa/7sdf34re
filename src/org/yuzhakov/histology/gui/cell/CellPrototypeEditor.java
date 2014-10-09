@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
 
+import org.yuzhakov.histology.model.m2D.Base;
 import org.yuzhakov.histology.model.m2D.Topology;
 import org.yuzhakov.histology.model.m3D.CellPrototype;
 import org.yuzhakov.histology.model.samples.Gekko;
@@ -30,7 +31,7 @@ public class CellPrototypeEditor extends JPanel {
 		JTextField name_TextField = new JTextField();
 		headerPanel.add(name_TextField, "grow, span 2, wrap");
 		headerPanel.add(new JLabel("Количество уровней"));
-		JSpinner modelSize_Spinner = new JSpinner(new SpinnerNumberModel(prototype.getTopologies().size(), 2, 50, 1));
+		JSpinner modelSize_Spinner = new JSpinner(new SpinnerNumberModel(prototype.getBases().size(), 2, 50, 1));
 		modelSize_Spinner.setPreferredSize(new Dimension(50, modelSize_Spinner.getHeight()));
 		headerPanel.add(modelSize_Spinner);
 		JButton addLayerButton = new JButton("Добавить");
@@ -40,8 +41,8 @@ public class CellPrototypeEditor extends JPanel {
 		
 		this.add(headerPanel, "wrap, grow");
 		int i = 1;
-		for (Topology topology : prototype.getTopologies()){
-			this.add(new LayerEditor("Уровень "+ i++, topology), "wrap, grow");
+		for (Base base : prototype.getBases()){
+			this.add(new LayerEditor("Уровень "+ i++, base), "wrap, grow");
 		}
 	}
 }

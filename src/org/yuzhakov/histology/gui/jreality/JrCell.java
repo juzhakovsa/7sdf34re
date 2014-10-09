@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.yuzhakov.histology.model.Vertex;
+import org.yuzhakov.histology.model.m2D.Base;
 import org.yuzhakov.histology.model.m3D.Cell;
 
+import de.jreality.geometry.FrameFieldType;
 import de.jreality.geometry.IndexedFaceSetFactory;
 import de.jreality.scene.Appearance;
 import de.jreality.scene.IndexedFaceSet;
@@ -56,31 +58,28 @@ public class JrCell {
 	
 	private static int[][] getEdges(Cell cell){
 		ArrayList<int[]> edgesList = new ArrayList<>();
-		for (int i = 0; i < cell.getNumberOfTopologies();++i){
-			edgesList.addAll(getTopologyEdges(cell, i));
+		for (int i = 0; i < cell.getNumberOfBases();++i){
+			edgesList.addAll(getBaseEdges(cell, i));
 		}
-		for (int i = 0; i < cell.getNumberOfTopologies() - 1;++i){
+		for (int i = 0; i < cell.getNumberOfBases() - 1;++i){
 			edgesList.addAll(getSideEdges(cell, i));
 		}
 		return edgesList.toArray(new int[0][0]);
 	}
 	
-	private static List<int[]> getTopologyEdges(Cell cell, int topology){
-		int offset = cell.getNumberOfVertexes(topology);
-		int topologySize = cell.getPrototype().getTopologies().get(topology).getSize();
+	private static List<int[]> getBaseEdges(Cell cell, int level){
 		List<int[]> topologyEdges = new ArrayList<>();
-		int i;
-		for (i = offset; i < offset+topologySize-1; ++i){
+		int offset = cell.getNumberOfVertexes(level);
+		Base base = cell.getPrototype().getBases().get(level);
+		List<Integer> verticesIndexes = base.getTopologyVerticesIndex();
+		int prev_index = verticesIndexes.get(verticesIndexes.size() - 1); // last
+		for (Integer curr_index : verticesIndexes){
 			int[] edge = new int[2];
-			edge[0] = i;
-			edge[1] = i+1;
+			edge[0] = prev_index+offset;
+			edge[1] = curr_index+offset;
 			topologyEdges.add(edge);
-		}
-		int[] edge = new int[2];
-		edge[0] = i;
-		edge[1] = offset;
-		topologyEdges.add(edge);
-		
+			prev_index = curr_index;
+		}	
 		return topologyEdges;
 	}
 	
@@ -104,7 +103,7 @@ public class JrCell {
 	
 	private static void setCommonAppearance(Appearance appearance){
 		appearance.setAttribute(LINE_SHADER+"."+DIFFUSE_COLOR, Color.BLACK);
-		appearance.setAttribute(LINE_SHADER+"."+TUBE_RADIUS, .01);
+		appearance.setAttribute(LINE_SHADER+"."+TUBE_RADIUS, 0.01);
 		appearance.setAttribute(VERTEX_DRAW, false);
 	}
 	
