@@ -51,7 +51,7 @@ public class JrCutPlane {
 	
 	private static void setAppearance(Appearance appearance){
 		appearance.setAttribute(POLYGON_SHADER+"."+DIFFUSE_COLOR, Color.GRAY);
-		appearance.setAttribute(POLYGON_SHADER+"."+TRANSPARENCY, 0.7);
+		appearance.setAttribute(POLYGON_SHADER+"."+TRANSPARENCY, 0.4);
 		appearance.setAttribute(TRANSPARENCY_ENABLED, true);
 		appearance.setAttribute(VERTEX_DRAW, false);
 		appearance.setAttribute(EDGE_DRAW, false);
@@ -68,6 +68,7 @@ public class JrCutPlane {
 		ifsf.setFaceCount(faces.length);
 		ifsf.setFaceIndices(faces);
 		ifsf.setGenerateFaceNormals(true);
+		ifsf.setGenerateVertexNormals(true);
 		ifsf.update();
 		
 		return ifsf.getIndexedFaceSet();

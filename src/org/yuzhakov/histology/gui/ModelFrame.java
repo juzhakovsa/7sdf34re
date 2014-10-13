@@ -1,9 +1,11 @@
 package org.yuzhakov.histology.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -60,6 +62,7 @@ public class ModelFrame extends JFrame{
 		add(mainPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	setExtendedState(Frame.MAXIMIZED_BOTH);
+    	setMinimumSize(new Dimension(300, 300));
     	validate();
     	pack();
     	setVisible(true);

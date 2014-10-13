@@ -396,61 +396,53 @@ public class Gekko {
 				{17,0},
 		};
 		
-		base6 = new Base();
-
-		base6.addTopologyVertex(new Vertex(D/2, -D/6, 0.0)); 	//0
-		base6.addTopologyVertex(new Vertex(D/2, D/6, 0.0)); 	//1			
-				
-		base6.addTopologyVertex(new Vertex(0, D/6, 0.0)); 		//2
-
-		base6.addTopologyVertex(new Vertex(-D/2, D/6, 0.0)); 	//3
-		base6.addTopologyVertex(new Vertex(-D/2, -D/6, 0.0)); 	//4
-				
-		base6.addTopologyVertex(new Vertex(0, -D/6, 0.0)); 		//5
-		
-		mapping6 = new int[][]{
-			{0,0},
-			{1,1},				
-			{2,2},				
-			{3,3},
-			{4,4},
-			{5,5},
-		};
+//		base6 = new Base();
+//
+//		base6.addTopologyVertex(new Vertex(D/2, -D/6, 0.0)); 	//0
+//		base6.addTopologyVertex(new Vertex(D/2, D/6, 0.0)); 	//1			
+//				
+//		base6.addTopologyVertex(new Vertex(0, D/6, 0.0)); 		//2
+//
+//		base6.addTopologyVertex(new Vertex(-D/2, D/6, 0.0)); 	//3
+//		base6.addTopologyVertex(new Vertex(-D/2, -D/6, 0.0)); 	//4
+//				
+//		base6.addTopologyVertex(new Vertex(0, -D/6, 0.0)); 		//5
+//		
+//		mapping6 = new int[][]{
+//			{0,0},
+//			{1,1},				
+//			{2,2},				
+//			{3,3},
+//			{4,4},
+//			{5,5},
+//		};
 		
 		Base base7 = new Base();
 
 		base7.addTopologyVertex(new Vertex(D/2, -D/6, 0.0)); 	//0
 		base7.addTopologyVertex(new Vertex(D/2, D/6, 0.0)); 	//1			
 				
-//		base7.addAuxilaryVertex(new Vertex(0, D/6, 0.0)); 		//2
+		base7.addAuxilaryVertex(new Vertex(0, D/6, 0.0)); 		//2
 
 		base7.addTopologyVertex(new Vertex(-D/2, D/6, 0.0)); 	//3
 		base7.addTopologyVertex(new Vertex(-D/2, -D/6, 0.0)); 	//4
 				
-//		base7.addAuxilaryVertex(new Vertex(0, -D/6, 0.0)); 		//5		
+		base7.addAuxilaryVertex(new Vertex(0, -D/6, 0.0)); 		//5		
 
 		
-//		int[][] mapping7 = new int[][]{
-//				{0,0},
-//				{1,0},				
-//				{2,1},				
-//				{3,2},
-//				{4,2},
-//				{5,1},
-//		};
 		int[][] mapping7 = new int[][]{
 				{0,0},
-				{1,0},							
-//				{2,1},
-				{2,1},
-				{3,1},
-//				{5,1}
+				{1,0},				
+				{2,1},				
+				{3,2},
+				{4,2},
+				{5,1},
 		};
 		
 		Base base8 = new Base();
 		base8.addTopologyVertex(new Vertex(D/3, 0, 0.0));	//0
+		base8.addAuxilaryVertex(new Vertex(0, 0.0, 0.0));	//1
 		base8.addTopologyVertex(new Vertex(-D/3, 0, 0.0));	//2
-		base8.addAuxilaryVertex(new Vertex(0, 0.0, 0.0));		//1
 
 		CellPrototype cellA = new CellPrototype();
 		cellA.getBases().add(base0);

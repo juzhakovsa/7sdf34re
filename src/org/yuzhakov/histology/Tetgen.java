@@ -9,8 +9,6 @@ import org.yuzhakov.histology.model.m2D.Base;
 import org.yuzhakov.histology.model.m3D.Cell;
 import org.yuzhakov.histology.model.m3D.CellPrototype;
 
-import com.kenai.jffi.Array;
-
 import de.jreality.shader.Color;
 
 public class Tetgen {

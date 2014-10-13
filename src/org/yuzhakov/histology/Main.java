@@ -7,13 +7,10 @@ import javax.swing.JFrame;
 
 import org.yuzhakov.histology.gui.ModelFrame;
 import org.yuzhakov.histology.gui.ResultFrame;
-import org.yuzhakov.histology.gui.cell.CellFrame;
-import org.yuzhakov.histology.gui.histion.HistionFrame;
 import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.gui.jreality.JrModelCut;
 import org.yuzhakov.histology.model.Vertex;
-import org.yuzhakov.histology.model.cut.CellCut;
 import org.yuzhakov.histology.model.cut.CutPlane;
 import org.yuzhakov.histology.model.cut.ModelCut;
 import org.yuzhakov.histology.model.m3D.Cell;
@@ -27,13 +24,13 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-            	CellPrototype cellPrototype = Gekko.cellTypeA();
-				for (int i = 0; i < 7; ++i){
-					cellPrototype.getBases().remove(0);
-					cellPrototype.getMappings().remove(0);
-				}
-				Cell cell = new Cell(cellPrototype);
-				cut(cell);
+//            	CellPrototype cellPrototype = Gekko.cellTypeA();
+//				for (int i = 0; i < 7; ++i){
+//					cellPrototype.getBases().remove(0);
+//					cellPrototype.getMappings().remove(0);
+//				}
+//				Cell cell = new Cell(cellPrototype);
+				cut(Gekko.getGisteon(new Vertex()));
             }           
 		});
 	}
@@ -120,7 +117,7 @@ public class Main {
 	}
 	
 	private static void cut(Cell cell){
-		final int HEIGHT = cell.getNumberOfBases();
+		final int MODEL_HEIGHT = cell.getNumberOfBases();
 		
 		final CutPlane cutPlane = new CutPlane();
 		cutPlane.construct();		
@@ -144,7 +141,47 @@ public class Main {
     		public void sliderStateChanged(double A, double B, double Z) {
     			cutPlane.setA(A);
     			cutPlane.setB(B);
-    			cutPlane.setZ(Z*HEIGHT);
+    			cutPlane.setZ(Z*MODEL_HEIGHT);
+    			cutPlane.construct();
+    			jrCutPlane.update();
+    			jrModelCut.update();
+    		}
+    	};
+		
+		ResultFrame resultFrame = new ResultFrame(result, "");
+    	resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+	}
+	
+	private static void cut(List<Cell> cells){
+		final int MODEL_HEIGHT = cells.get(0).getNumberOfBases();
+		
+		final CutPlane cutPlane = new CutPlane();
+		cutPlane.construct();		
+
+		final ModelCut modelCut = new ModelCut(cells, cutPlane);
+		
+		List<JrCell> jrCells = new ArrayList<>();
+		for (Cell cell : cells){
+			jrCells.add(new JrCell(cell));
+		}
+		final JrCutPlane jrCutPlane = new JrCutPlane(cutPlane);
+		final JrModelCut jrModelCut = new JrModelCut(modelCut);
+		
+		final SceneGraphComponent model = SceneGraphUtility.createFullSceneGraphComponent();
+		for (JrCell cell : jrCells){
+			model.addChild(cell.getSceneGraphComponent());
+		}
+		model.addChild(jrCutPlane.getSceneGraphComponent());
+		
+		final SceneGraphComponent result = SceneGraphUtility.createFullSceneGraphComponent();
+		result.addChild(jrModelCut.getSceneGraphComponent());
+		
+    	ModelFrame modelTestFrame = new ModelFrame(model, "Модель"){
+    		@Override
+    		public void sliderStateChanged(double A, double B, double Z) {
+    			cutPlane.setA(A);
+    			cutPlane.setB(B);
+    			cutPlane.setZ(Z*MODEL_HEIGHT);
     			cutPlane.construct();
     			jrCutPlane.update();
     			jrModelCut.update();
