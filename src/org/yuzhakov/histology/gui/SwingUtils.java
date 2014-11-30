@@ -11,8 +11,6 @@ public class SwingUtils {
 			String toolTipText) {
 		// Look for the image.
 		Image image = Toolkit.getDefaultToolkit().getImage(SwingUtils.class.getResource("/icons/" + imageName + ".gif"));
-//		String imgLocation = "res/icons/"
-//				+ imageName + ".gif";
 
 		// Create and initialize the button.
 		JButton button = new JButton();

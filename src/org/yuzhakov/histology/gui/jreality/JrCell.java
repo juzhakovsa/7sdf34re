@@ -44,7 +44,7 @@ public class JrCell {
 
 	private static double[][] getVertexCoordinates(Cell cell){
 		ArrayList<double[]> coordinates = new ArrayList<>();
-		for (Vertex[] topologyCoordinates : cell.getTopologiesVertices()){
+		for (Vertex[] topologyCoordinates : cell.getAllVerticesByLayer()){
 			for (Vertex v:topologyCoordinates){
 				coordinates.add(v.getCoordinates());
 			}

@@ -73,7 +73,7 @@ public class Tetgen {
 		int i = 0;
 		int j = 0;
 		int layer = 0;
-		for (Vertex[] topologyCoordinates : cell.getTopologiesVertices()){
+		for (Vertex[] topologyCoordinates : cell.getAllVerticesByLayer()){
 			for (Vertex v:topologyCoordinates){
 				vertexes[i] = v.X;
 				vertexes[i+1] = v.Y;
@@ -184,7 +184,7 @@ public class Tetgen {
 		return numberOfTetrahedrons;
 	}
 	
-	public List<Tetrahedron> getTetrahedronList(Color color){
+	public List<Tetrahedron> getTetrahedronList(){
 		ArrayList<Tetrahedron> tetraList = new ArrayList<>();
 		for (int i = 0; i < numberOfTetrahedrons*4;i+=4){
 			Vertex[] tetrahedron = new Vertex[]{
@@ -193,13 +193,9 @@ public class Tetgen {
 					getVertex(tetrahedrons[i+2]),
 					getVertex(tetrahedrons[i+3]),
 			};
-			tetraList.add(new Tetrahedron(tetrahedron, color));
+			tetraList.add(new Tetrahedron(tetrahedron));
 		}
 		return tetraList;
-	}
-	
-	public List<Tetrahedron> getTetrahedronList(){
-		return getTetrahedronList(Color.BLACK);
 	}
 	
 	private Vertex getVertex(int index){

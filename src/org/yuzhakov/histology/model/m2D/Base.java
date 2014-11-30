@@ -8,9 +8,11 @@ import org.yuzhakov.histology.triangulation.Triangulation;
 
 public class Base{
 	private List<Vertex> topologyVertices = new ArrayList<>();
-	private List<Vertex> auxilaryVertices = new ArrayList<>();
+	private List<Vertex> intermediateVertices = new ArrayList<>();
+	private List<Vertex> peripheralVertices = new ArrayList<>();
 	private List<Vertex> allVertices = new ArrayList<>();
 	private List<Integer> topologyVerticesIndex = new ArrayList<>();
+	private List<Integer> centralVerticesIndex = new ArrayList<>();	//topology+auxilary
 	
 	public Base(){
 		super();
@@ -29,12 +31,23 @@ public class Base{
 	public void setTopologyVertices(List<Vertex> topologyVertices) {
 		this.topologyVertices = topologyVertices;
 	}
-	public List<Vertex> getAuxilaryVertices() {
-		return auxilaryVertices;
+	
+	public List<Vertex> getIntermediateVertices() {
+		return intermediateVertices;
 	}
-	public void setAuxilaryVertices(List<Vertex> auxilaryVertices) {
-		this.auxilaryVertices = auxilaryVertices;
+
+	public void setIntermediateVertices(List<Vertex> intermediateVertices) {
+		this.intermediateVertices = intermediateVertices;
 	}
+
+	public List<Vertex> getPeripheralVertices() {
+		return peripheralVertices;
+	}
+
+	public void setPeripheralVertices(List<Vertex> peripheralVertices) {
+		this.peripheralVertices = peripheralVertices;
+	}
+
 	public List<Vertex> getAllVertices() {
 		return allVertices;
 	}
@@ -48,16 +61,31 @@ public class Base{
 	public void setTopologyVerticesIndex(List<Integer> topologyVerticesIndex) {
 		this.topologyVerticesIndex = topologyVerticesIndex;
 	}
+	public List<Integer> getCentralVerticesIndex() {
+		return centralVerticesIndex;
+	}
+	public void setCentralVerticesIndex(List<Integer> centralVerticesIndex) {
+		this.centralVerticesIndex = centralVerticesIndex;
+	}
 	public int addTopologyVertex(Vertex vertex){
 		allVertices.add(vertex);
 		int index = allVertices.size()-1;
 		topologyVertices.add(vertex);
 		topologyVerticesIndex.add(index);
+		centralVerticesIndex.add(index);
 		return index;
 	}
-	public int addAuxilaryVertex(Vertex vertex){
+	public int addIntermediateVertex(Vertex vertex){
 		allVertices.add(vertex);
-		auxilaryVertices.add(vertex);
+		int index = allVertices.size()-1;
+		intermediateVertices.add(vertex);
+		topologyVerticesIndex.add(index);
+		centralVerticesIndex.add(index);
+		return index;
+	}
+	public int addPeripheralVertex(Vertex vertex){
+		allVertices.add(vertex);
+		peripheralVertices.add(vertex);
 		return allVertices.size()-1;
 	}
 	public int size(){

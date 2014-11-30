@@ -11,9 +11,8 @@ public class Tetrahedron {
 	private Color color;
 	private Segment[] segments;
 	
-	public Tetrahedron(Vertex[] corners, Color color) {
+	public Tetrahedron(Vertex[] corners) {
 		this.corners = corners;
-		this.color = color;
 		this.segments = new Segment[]{
 				new Segment(corners[0], corners[1]),
 				new Segment(corners[0], corners[2]),
@@ -22,10 +21,6 @@ public class Tetrahedron {
 				new Segment(corners[1], corners[3]),
 				new Segment(corners[2], corners[3]),
 		};
-	}
-	
-	public Tetrahedron(Vertex[] corners){
-		this(corners, Util.getRandomColor());
 	}
 
 	public Vertex[] getCorners() {

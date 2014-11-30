@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import org.yuzhakov.histology.Settings;
+import org.yuzhakov.histology.Tetgen;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.m3D.Cell;
 
@@ -17,10 +16,10 @@ public class CellCut {
 	private List<Tetrahedron> tetrahedrons;
 	private Cell cell;
 	
-	public CellCut(CutPlane cutPlane, Cell cell, List<Tetrahedron> tetrahedrons){
+	public CellCut(CutPlane cutPlane, Cell cell){
 		this.cutPlane = cutPlane;
 		this.cell = cell;
-		this.tetrahedrons = tetrahedrons;
+		this.tetrahedrons = createTetrahedrons(cell);
 	}
 		
 	public CutPlane getCutPlane() {
@@ -128,5 +127,10 @@ public class CellCut {
 		return result;
 	}
 	
+	private List<Tetrahedron> createTetrahedrons(Cell cell){
+		Tetgen tetgen = new Tetgen(cell);
+		tetgen.tetrahedralize(null);
+		return tetgen.getTetrahedronList();
+	}
 	
 }

@@ -33,7 +33,19 @@ public class Cell {
 		this.angle = angle;
 	}
 	
-	public List<Vertex[]> getTopologiesVertices(){
+	public List<Vertex[]> getAllVerticesByLayer(){
+		List<Vertex[]> vertices = new ArrayList<>();
+		int level = 0;
+		for (Base base : prototype.getBases()){
+			double height = heights.get(level);
+			Vertex[] layer = copyWithOffsetRotationHeight(base.getAllVertices(),offset,angle,height);
+			vertices.add(layer);
+			++level;
+		}
+		return vertices;
+	}
+	
+	public List<Vertex[]> getCentralVerticesIndexByLayer(){
 		List<Vertex[]> vertices = new ArrayList<>();
 		int level = 0;
 		for (Base base : prototype.getBases()){

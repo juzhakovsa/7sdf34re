@@ -32,14 +32,10 @@ public class ModelCut {
 
 	private List<CellCut> createCellCuts(List<Cell> cells, CutPlane cutPlane){
 		List<CellCut> cellCuts = new ArrayList<>();
-		for (Cell cell : cells){
-			Tetgen tetgen = new Tetgen(cell);
-			tetgen.tetrahedralize(null);
-			
-			CellCut cellCut = new CellCut(cutPlane, cell, tetgen.getTetrahedronList());
+		for (Cell cell : cells){			
+			CellCut cellCut = new CellCut(cutPlane, cell);
 			cellCuts.add(cellCut);
-		}
-		
+		}		
 		return cellCuts;		
 	}
 	
