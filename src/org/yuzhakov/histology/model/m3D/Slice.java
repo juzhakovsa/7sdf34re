@@ -7,38 +7,14 @@ import java.util.List;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.m2D.Base;
 
-public class Slice {
-	private Base top;
-	private Base bottom;
-	private int[][] mapping;
-	
+public class Slice {	
 	private List<Vertex> vertices;
 	private List<Integer[]> faces;
-	
-	public Slice(Base top, Base bottom, int[][] mapping) {
+		
+	public Slice(List<Vertex> vertices, List<Integer[]> faces) {
 		super();
-		this.top = top;
-		this.bottom = bottom;
-		this.mapping = mapping;
-		initFaces();
-	}
-	public Base getTop() {
-		return top;
-	}
-	public void setTop(Base top) {
-		this.top = top;
-	}
-	public Base getBottom() {
-		return bottom;
-	}
-	public void setBottom(Base bottom) {
-		this.bottom = bottom;
-	}
-	public int[][] getMapping() {
-		return mapping;
-	}
-	public void setMapping(int[][] mapping) {
-		this.mapping = mapping;
+		this.vertices = vertices;
+		this.faces = faces;
 	}
 	public List<Vertex> getVertices() {
 		return vertices;
@@ -52,42 +28,62 @@ public class Slice {
 	public void setFaces(List<Integer[]> faces) {
 		this.faces = faces;
 	}
-	private void initFaces(){
-		Factory factory = new Factory(top.getAllVertices(), bottom.getAllVertices());
-		
-		int f = 0;
-		for (; f < mapping.length - 1; ++f){
-			int[] map1 = mapping[f];
-			int[] map2 = mapping[f+1];
-			factory.addSideFace(map1[0], map2[0], map1[1], map2[1]);			
-		}		
-		int[] map1 = mapping[f];
-		int[] map2 = mapping[0];
-		factory.addSideFace(map1[0], map2[0], map1[1], map2[1]);
-		
-		factory.addTopFace(top.getCentralVerticesIndex());
-		factory.addBottomFace(bottom.getCentralVerticesIndex());
-		
-		this.vertices = factory.getVertices();
-		this.faces = factory.getFaces();
-	}
 	
-	private class Factory{
-		private List<Vertex> topVertices;
-		private List<Vertex> bottomVertices;
+	public static class Builder{
+		private List<Vertex> allTopVertices;
+		private List<Vertex> allBottomVertices;
+		private List<Integer> topCentralVertices;
+		private List<Integer> bottomCentralVertices;
+		private int[][] mapping;
 		
-		private List<Integer> topIndexList = new LinkedList<>();
-		private List<Integer> bottomIndexList = new LinkedList<>();
-		private List<Vertex> newIndexList = new LinkedList<>();
-		private List<Integer[]> faces = new LinkedList<>();
+		private Integer[] topIndexList;
+		private Integer[] bottomIndexList;
+		private List<Vertex> newIndexList;
+		private List<Integer[]> faces;
 		
-		public Factory(List<Vertex> topVertices, List<Vertex> bottomVertices) {
-			super();
-			this.topVertices = topVertices;
-			this.bottomVertices = bottomVertices;
+		public static Slice buildSlice(List<Vertex> allTopVertices,
+				List<Vertex> allBottomVertices,
+				List<Integer> topCentralVertices,
+				List<Integer> bottomCentralVertices, int[][] mapping){
+			
+			return new Builder(allTopVertices, allBottomVertices, topCentralVertices, bottomCentralVertices, mapping).buildSlice();
 		}
 		
-		public void addSideFace(int bottom1, int bottom2, int top1, int top2){
+		public Builder(List<Vertex> allTopVertices,
+				List<Vertex> allBottomVertices,
+				List<Integer> topCentralVertices,
+				List<Integer> bottomCentralVertices, int[][] mapping) {
+			super();
+			this.allTopVertices = allTopVertices;
+			this.allBottomVertices = allBottomVertices;
+			this.topCentralVertices = topCentralVertices;
+			this.bottomCentralVertices = bottomCentralVertices;
+			this.mapping = mapping;
+		}
+		
+		public Slice buildSlice(){
+			topIndexList = new Integer[allTopVertices.size()];
+			bottomIndexList = new Integer[allBottomVertices.size()];
+			newIndexList = new LinkedList<>();
+			faces = new LinkedList<>();
+			
+			int f = 0;
+			for (; f < mapping.length - 1; ++f){
+				int[] map1 = mapping[f];
+				int[] map2 = mapping[f+1];
+				addSideFace(map1[0], map2[0], map1[1], map2[1]);			
+			}		
+			int[] map1 = mapping[f];
+			int[] map2 = mapping[0];
+			addSideFace(map1[0], map2[0], map1[1], map2[1]);
+			
+			addTopFace(topCentralVertices);
+			addBottomFace(bottomCentralVertices);
+			
+			return new Slice(this.newIndexList, this.faces);
+		}
+
+		private void addSideFace(int bottom1, int bottom2, int top1, int top2){
 			List<Integer> face = new ArrayList<>(4);
 			
 			face.add(getIndexVertexBottom(bottom1));
@@ -102,7 +98,7 @@ public class Slice {
 			faces.add(face.toArray(new Integer[0]));
 		}
 		
-		public void addTopFace(List<Integer> top){
+		private void addTopFace(List<Integer> top){
 			List<Integer> face = new ArrayList<>(top.size());
 			
 			for (Integer index : top)
@@ -113,7 +109,7 @@ public class Slice {
 			faces.add(face.toArray(new Integer[0]));
 		}
 		
-		public void addBottomFace(List<Integer> bottom){
+		private void addBottomFace(List<Integer> bottom){
 			List<Integer> face = new ArrayList<>(bottom.size());
 			
 			for (Integer index : bottom)
@@ -123,32 +119,24 @@ public class Slice {
 				return; //Not a face
 			faces.add(face.toArray(new Integer[0]));
 		}
-		
-		public List<Integer[]> getFaces() {
-			return new ArrayList<>(faces);
-		}
-
-		public List<Vertex> getVertices() {
-			return new ArrayList<>(newIndexList);
-		}
 
 		private int getIndexVertexTop(int index){
-			Integer newIndex = topIndexList.get(index);
+			Integer newIndex = topIndexList[index];
 			if (newIndex == null){
 				newIndex =  newIndexList.size();
-				topIndexList.add(index, newIndex);
-				Vertex vertex = topVertices.get(index);
+				topIndexList[index] = newIndex;
+				Vertex vertex = allTopVertices.get(index);
 				newIndexList.add(newIndex, vertex);				
 			}
 			return newIndex;
 		}
 		
 		private int getIndexVertexBottom(int index){
-			Integer newIndex = bottomIndexList.get(index);
+			Integer newIndex = bottomIndexList[index];
 			if (newIndex == null){
 				newIndex =  newIndexList.size();
-				bottomIndexList.add(index, newIndex);
-				Vertex vertex = bottomVertices.get(index);
+				bottomIndexList[index] = newIndex;
+				Vertex vertex = allBottomVertices.get(index);
 				newIndexList.add(newIndex, vertex);				
 			}
 			return newIndex;

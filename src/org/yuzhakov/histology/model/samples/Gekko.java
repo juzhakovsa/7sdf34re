@@ -453,7 +453,7 @@ public class Gekko {
 		cellA.getBases().add(base5);
 		cellA.getBases().add(base6);
 		cellA.getBases().add(base7);
-		cellA.getBases().add(base8);
+//		cellA.getBases().add(base8);
 		
 		cellA.getMappings().add(mapping0);
 		cellA.getMappings().add(mapping1);
@@ -462,7 +462,7 @@ public class Gekko {
 		cellA.getMappings().add(mapping4);
 		cellA.getMappings().add(mapping5);
 		cellA.getMappings().add(mapping6);
-		cellA.getMappings().add(mapping7);
+//		cellA.getMappings().add(mapping7);
 		
 		return cellA;
 	}

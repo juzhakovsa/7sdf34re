@@ -30,7 +30,9 @@ public class Main {
 //					cellPrototype.getMappings().remove(0);
 //				}
 //				Cell cell = new Cell(cellPrototype);
-				cut(Gekko.getGisteon(new Vertex()));
+//				cut(Gekko.getGisteon(new Vertex()));
+            	cut(new Cell(Gekko.cellTypeA()));
+//            	show(new Cell(Gekko.cellTypeA()));
             }           
 		});
 	}

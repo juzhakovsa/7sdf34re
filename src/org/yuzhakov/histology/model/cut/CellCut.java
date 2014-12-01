@@ -10,6 +10,7 @@ import org.yuzhakov.histology.Settings;
 import org.yuzhakov.histology.Tetgen;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.m3D.Cell;
+import org.yuzhakov.histology.tetrahedralization.Tetrahedralization;
 
 public class CellCut {
 	private CutPlane cutPlane;
@@ -19,7 +20,7 @@ public class CellCut {
 	public CellCut(CutPlane cutPlane, Cell cell){
 		this.cutPlane = cutPlane;
 		this.cell = cell;
-		this.tetrahedrons = createTetrahedrons(cell);
+		this.tetrahedrons = Tetrahedralization.createTetrahedralization(cell);
 	}
 		
 	public CutPlane getCutPlane() {

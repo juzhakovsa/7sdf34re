@@ -8,6 +8,7 @@ import org.yuzhakov.histology.model.cut.Tetrahedron;
 import org.yuzhakov.histology.model.m2D.Base;
 import org.yuzhakov.histology.model.m3D.Cell;
 import org.yuzhakov.histology.model.m3D.CellPrototype;
+import org.yuzhakov.histology.model.m3D.Slice;
 
 import de.jreality.shader.Color;
 
@@ -63,6 +64,42 @@ public class Tetgen {
 				++i;
 			}
 		}
+	}
+	
+	public Tetgen(Slice slice){
+		//vertexes
+		numberOfVertexes = slice.getVertices().size();
+		vertexes = new double[numberOfVertexes*3];
+		int i = 0;
+		int j = 0;
+		for (Vertex v : slice.getVertices()){
+			vertexes[i] = v.X;
+			vertexes[i+1] = v.Y;
+			vertexes[i+2] = v.Z;
+			i+=3;
+		}
+		
+		//faces
+		List<Integer[]> facesList = slice.getFaces();
+		numberOfFaces = facesList.size();
+		facesSizes = new int[numberOfFaces];
+		int sum = 0;
+		i = 0;
+		for (; i < numberOfFaces; ++i){
+			int s = facesList.get(i).length;
+			facesSizes[i] = s;
+			sum += s;
+		}
+		faces = new int[sum];
+		i = 0;
+		j = 0;
+		for (; i < numberOfFaces; ++i){
+			Integer[] f = facesList.get(i);
+			for (int k = 0; k < f.length; ++k){
+				faces[j] = f[k];
+				++j;
+			}
+		}		
 	}
 	
 	public Tetgen(Cell cell){

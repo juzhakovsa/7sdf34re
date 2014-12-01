@@ -93,7 +93,7 @@ public class Base{
 	}
 	public List<int[]> getTriangulation(){
 		return Triangulation.triangulate(
-				topologyVertices,
+				allVertices,
 				topologyVerticesIndex);
 	}
 	

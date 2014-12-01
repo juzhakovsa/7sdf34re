@@ -3,6 +3,7 @@ package org.yuzhakov.histology.model.m3D;
 import de.jreality.shader.Color;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.yuzhakov.histology.model.Vertex;
@@ -45,16 +46,19 @@ public class Cell {
 		return vertices;
 	}
 	
-	public List<Vertex[]> getCentralVerticesIndexByLayer(){
-		List<Vertex[]> vertices = new ArrayList<>();
-		int level = 0;
-		for (Base base : prototype.getBases()){
-			double height = heights.get(level);
-			Vertex[] layer = copyWithOffsetRotationHeight(base.getAllVertices(),offset,angle,height);
-			vertices.add(layer);
-			++level;
+	public List<Slice> getSlices(){
+		List<Vertex[]> allVertices = getAllVerticesByLayer();
+		int numberOfSlices = getNumberOfBases() - 1;
+		List<Slice> slices = new ArrayList<>(numberOfSlices);
+		for (int i = 0; i < numberOfSlices; ++i){
+			slices.add(Slice.Builder.buildSlice(
+					Arrays.asList(allVertices.get(i+1)),
+					Arrays.asList(allVertices.get(i)),
+					prototype.getBases().get(i+1).getCentralVerticesIndex(),
+					prototype.getBases().get(i).getCentralVerticesIndex(),
+					prototype.getMappings().get(i)));
 		}
-		return vertices;
+		return slices;
 	}
 	
 	public Color getColor(){

@@ -11,19 +11,24 @@ import org.poly2tri.triangulation.delaunay.DelaunayTriangle;
 import org.yuzhakov.histology.model.Vertex;
 
 public class Triangulation {	
-	public static List<int[]> triangulate(List<Vertex> vertices, List<Integer> index){
+	public static List<int[]> triangulate(List<Vertex> vertices, List<Integer> indices){
 		if (vertices.size() < 3){
-			return new ArrayList<>();
+			return new ArrayList<>(0);
+		}
+		
+		if (indices != null && indices.size() < 3){
+			return new ArrayList<>(0);
 		}
 		
 		List<PolygonPoint> points = new ArrayList<>();
-		if (index == null){
+		if (indices == null){
 			for (int i = 0; i < vertices.size(); ++i) {
 				points.add(new TriangulationVertex(vertices.get(i), i));
 			}
 		}else{
-			for (int i = 0; i < vertices.size(); ++i) {
-				points.add(new TriangulationVertex(vertices.get(i), index.get(i)));
+			for (int i = 0; i < indices.size(); ++i) {
+				int index = indices.get(i);
+				points.add(new TriangulationVertex(vertices.get(index), index));
 			}
 		}
     	Polygon polygon = new Polygon(points);
