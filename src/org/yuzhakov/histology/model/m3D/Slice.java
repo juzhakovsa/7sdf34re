@@ -10,11 +10,13 @@ import org.yuzhakov.histology.model.m2D.Base;
 public class Slice {	
 	private List<Vertex> vertices;
 	private List<Integer[]> faces;
-		
-	public Slice(List<Vertex> vertices, List<Integer[]> faces) {
+	private List<int[]> edges;
+			
+	public Slice(List<Vertex> vertices, List<Integer[]> faces, List<int[]> edges) {
 		super();
 		this.vertices = vertices;
 		this.faces = faces;
+		this.edges = edges;
 	}
 	public List<Vertex> getVertices() {
 		return vertices;
@@ -28,7 +30,13 @@ public class Slice {
 	public void setFaces(List<Integer[]> faces) {
 		this.faces = faces;
 	}
-	
+	public List<int[]> getEdges() {
+		return edges;
+	}
+	public void setEdges(List<int[]> edges) {
+		this.edges = edges;
+	}
+
 	public static class Builder{
 		private List<Vertex> allTopVertices;
 		private List<Vertex> allBottomVertices;
@@ -40,6 +48,7 @@ public class Slice {
 		private Integer[] bottomIndexList;
 		private List<Vertex> newIndexList;
 		private List<Integer[]> faces;
+		private List<int[]> edges;
 		
 		public static Slice buildSlice(List<Vertex> allTopVertices,
 				List<Vertex> allBottomVertices,
@@ -66,12 +75,13 @@ public class Slice {
 			bottomIndexList = new Integer[allBottomVertices.size()];
 			newIndexList = new LinkedList<>();
 			faces = new LinkedList<>();
+			edges = new LinkedList<>();
 			
 			int f = 0;
 			for (; f < mapping.length - 1; ++f){
 				int[] map1 = mapping[f];
 				int[] map2 = mapping[f+1];
-				addSideFace(map1[0], map2[0], map1[1], map2[1]);			
+				addSideFace(map1[0], map2[0], map1[1], map2[1]);
 			}		
 			int[] map1 = mapping[f];
 			int[] map2 = mapping[0];
@@ -80,7 +90,9 @@ public class Slice {
 			addTopFace(topCentralVertices);
 			addBottomFace(bottomCentralVertices);
 			
-			return new Slice(this.newIndexList, this.faces);
+			return new Slice(new ArrayList<>(this.newIndexList),
+					new ArrayList<>(this.faces),
+					new ArrayList<>(this.edges));
 		}
 
 		private void addSideFace(int bottom1, int bottom2, int top1, int top2){
@@ -96,6 +108,7 @@ public class Slice {
 			if (face.size() < 3)
 				return; //Not a face
 			faces.add(face.toArray(new Integer[0]));
+			addFaceEdges(face);
 		}
 		
 		private void addTopFace(List<Integer> top){
@@ -118,6 +131,47 @@ public class Slice {
 			if (face.size() < 3)
 				return; //Not a face
 			faces.add(face.toArray(new Integer[0]));
+		}
+		
+		private void addFaceEdges(List<Integer> face){
+			if (face.size() < 2)
+				return;
+			int v_last = face.get(face.size() - 1);
+			int i, v0, v1;
+			v1 = v_last;
+			for (i = 0; i < face.size(); ++i){
+				v0 = v1;
+				v1 = face.get(i);
+				edges.add(new int[]{v0,v1});
+			}
+		}
+		
+		private void addTopEdges(List<Integer> top){
+			if (top.size() < 2)
+				return;
+			int v_first = getIndexVertexTop(top.get(0));
+			int i, v0, v1;
+			v1 = v_first;
+			for (i = 1; i < top.size(); ++i){
+				v0 = v1;
+				v1 = getIndexVertexTop(top.get(i));
+				edges.add(new int[]{v0,v1});
+			}
+			edges.add(new int[]{v1,v_first});
+		}
+		
+		private void addBottomEdges(List<Integer> bottom){
+			if (bottom.size() < 2)
+				return;
+			int v_first = getIndexVertexBottom(bottom.get(0));
+			int i, v0, v1;
+			v1 = v_first;
+			for (i = 1; i < bottom.size(); ++i){
+				v0 = v1;
+				v1 = getIndexVertexBottom(bottom.get(i));
+				edges.add(new int[]{v0,v1});
+			}
+			edges.add(new int[]{v1,v_first});
 		}
 
 		private int getIndexVertexTop(int index){

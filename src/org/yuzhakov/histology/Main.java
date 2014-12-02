@@ -10,11 +10,13 @@ import org.yuzhakov.histology.gui.ResultFrame;
 import org.yuzhakov.histology.gui.jreality.JrCell;
 import org.yuzhakov.histology.gui.jreality.JrCutPlane;
 import org.yuzhakov.histology.gui.jreality.JrModelCut;
+import org.yuzhakov.histology.gui.jreality.JrSlice;
 import org.yuzhakov.histology.model.Vertex;
 import org.yuzhakov.histology.model.cut.CutPlane;
 import org.yuzhakov.histology.model.cut.ModelCut;
 import org.yuzhakov.histology.model.m3D.Cell;
 import org.yuzhakov.histology.model.m3D.CellPrototype;
+import org.yuzhakov.histology.model.m3D.Slice;
 import org.yuzhakov.histology.model.samples.Gekko;
 
 import de.jreality.scene.SceneGraphComponent;
@@ -31,8 +33,11 @@ public class Main {
 //				}
 //				Cell cell = new Cell(cellPrototype);
 //				cut(Gekko.getGisteon(new Vertex()));
-            	cut(new Cell(Gekko.cellTypeA()));
+//            	cut(new Cell(Gekko.cellTypeA()));
 //            	show(new Cell(Gekko.cellTypeA()));
+            	Cell cell = new Cell(Gekko.cellTypeA());
+            	Slice slice = cell.getSlices().get(0);
+            	show(slice);
             }           
 		});
 	}
@@ -114,6 +119,14 @@ public class Main {
 		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
 		JrCell jrCell = new JrCell(cell);
 		world.addChild(jrCell.getSceneGraphComponent());
+		ResultFrame resultFrame = new ResultFrame(world, "");
+    	resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+	}
+	
+	private static void show(Slice slice){
+		final SceneGraphComponent world = SceneGraphUtility.createFullSceneGraphComponent();
+		JrSlice jrSlice = new JrSlice(slice);
+		world.addChild(jrSlice.getSceneGraphComponent());
 		ResultFrame resultFrame = new ResultFrame(world, "");
     	resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 	}
