@@ -35,9 +35,11 @@ public class Main {
 //				cut(Gekko.getGisteon(new Vertex()));
 //            	cut(new Cell(Gekko.cellTypeA()));
 //            	show(new Cell(Gekko.cellTypeA()));
-            	Cell cell = new Cell(Gekko.cellTypeA());
-            	Slice slice = cell.getSlices().get(0);
-            	show(slice);
+//            	Cell cell = new Cell(Gekko.cellTypeA());
+//            	Slice slice = cell.getSlices().get(1);
+//            	show(slice);
+//            	show(cell);
+            	cut(Gekko.getModel(3, 3));
             }           
 		});
 	}
@@ -70,7 +72,7 @@ public class Main {
 //				List<Cell> cells = gisteon;
 //				cells.add(gisteon.get(2));
 				
-//				for (Cell cell : gistion){
+//				for (Cell cell : gis ion){
 //					JrCell jrCell = new JrCell(cell);
 //					world.addChild(jrCell.getSceneGraphComponent());
 //				}

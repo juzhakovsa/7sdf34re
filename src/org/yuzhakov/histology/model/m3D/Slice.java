@@ -102,7 +102,7 @@ public class Slice {
 			if (bottom2 != bottom1)
 				face.add(getIndexVertexBottom(bottom2));
 			face.add(getIndexVertexTop(top2));
-			if (bottom1 != bottom2)
+			if (top1 != top2)
 				face.add(getIndexVertexTop(top1));
 			
 			if (face.size() < 3)
